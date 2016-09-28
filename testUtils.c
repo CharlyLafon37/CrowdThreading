@@ -36,4 +36,18 @@ int main(){
 	positionX=40;positionY=40;
 	printf("Position (%d,%d) le déplacement est bien SOUTHEAST = %d\n"
 		,positionX,positionY,(SOUTHEAST==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+
+	positionX=40;positionY=50;
+	printf("Position (%d,%d) le déplacement est bien EAST = %d\n"
+		,positionX,positionY,(EAST==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+	positionX=60;positionY=50;
+	printf("Position (%d,%d) le déplacement est bien WEST = %d\n"
+		,positionX,positionY,(WEST==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+
+	positionX=50;positionY=50;
+	printf("Position (%d,%d) le déplacement est bien STAY = %d\n"
+		,positionX,positionY,(STAY==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+	positionX=-1;positionY=50;
+	printf("Position (%d,%d) le déplacement est bien ERROR = %d\n"
+		,positionX,positionY,(ERROR==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
 }

@@ -12,7 +12,7 @@
 int main(){
 
 	printf("--- Test move_to_azimuth\t---");
-	int azimuthX=50,azimuth=50;
+	int azimuthX=50,azimuthY=50;
 	int positionX,positionY;
 
 	printf("Azimuth (%d,%d)\n",azimuthX,azimuthY);
@@ -36,4 +36,11 @@ int main(){
 	positionX=40;positionY=40;
 	printf("Position (%d,%d) le déplacement est bien SOUTHEAST = %d\n"
 		,positionX,positionY,(SOUTHEAST==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+
+	positionX=40;positionY=50;
+	printf("Position (%d,%d) le déplacement est bien EAST = %d\n"
+		,positionX,positionY,(EAST==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+	positionX=60;positionY=50;
+	printf("Position (%d,%d) le déplacement est bien WEST = %d\n"
+		,positionX,positionY,(WEST==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
 }
