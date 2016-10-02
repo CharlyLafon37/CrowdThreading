@@ -3,7 +3,7 @@
 # Groupe Lafon Monzein
 
 # Main
-gcc main.c -lSDL2 -lSDL2main -o crow.out
+gcc main.c -lSDL2 -lSDL2main -lm -o crow.out
 
 # Tests
 gcc -o testUtils.out utils.c testUtils.c
