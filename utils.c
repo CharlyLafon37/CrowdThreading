@@ -7,7 +7,9 @@
 */
 
 #include <stdio.h>
+#include <SDL2/SDL.h>
 #include "utils.h"
+
 
 
 /*
@@ -48,3 +50,19 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 			return STAY;
 	}
 }
+
+/*
+	Renvoie un point pour le deplacement de la personne en paramètre.
+*/
+SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople){
+	SDL_Point result = {0,0};
+
+	
+
+
+	return result;
+}
+
+
+
+
