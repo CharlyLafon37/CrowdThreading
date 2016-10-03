@@ -36,6 +36,9 @@
 #define XMAX_PEOPLE WINDOW_WIDTH-PEOPLE_WIDTH
 #define YMAX_PEOPLE WINDOW_HEIGHT-PEOPLE_HEIGHT
 
+#define XAZIMUTH 0
+#define YAZIMUTH 64
+
 void obstaclesLayout(SDL_Rect obstacles[]);
 void spawnPeople(SDL_Rect people[], int nbPeople);
 

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "positions.h"
+#include "utils.h"
 
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople);
 void print(SDL_Renderer* renderer, SDL_Rect obstacles[], SDL_Rect people[], int nbPeople);
@@ -59,15 +60,18 @@ int main(int argc, char** argv)
     {
         for(j = 0; j < nbPeople; j++)
         {
-            if(people[j].x + PEOPLE_WIDTH < WINDOW_WIDTH)
-                people[j].x++;
+            SDL_Point newPosition = move_people(j, people, nbPeople, XAZIMUTH, YAZIMUTH);
             
+            people[j].x = newPosition.x;
+            people[j].y = newPosition.y;
+            printf("%d  ", people[j].x);
+            printf("%d\n", people[j].y);
         }
         print(renderer, obstacles, people, nbPeople);
         SDL_Delay(100);
-        
     }
-    SDL_Delay(5000); /* Attendre cinq secondes, que l'utilisateur voie la fenêtre */
+    
+    SDL_Delay(5000); // Attendre cinq secondes, que l'utilisateur voie la fenêtre
     
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -90,7 +94,6 @@ void argumentsTreatment(char** argv, int nbArguments, int* nbPeople)
                 temp[0] = argv[i][2];
                 *nbPeople = pow(2, atoi(temp));
             }
-            
         }
     }
 }
