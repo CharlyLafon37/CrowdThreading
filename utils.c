@@ -63,7 +63,25 @@ int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, SDL_Point moveTo)
 	if(moveTo.y<0 || moveTo.y+PEOPLE_HEIGHT>=WINDOW_HEIGHT)
 		return 0;
 	// Obstacles
-	if(moveTo.x<0 && moveTo.x+PEOPLE_WIDTH>=WINDOW_WIDTH)
+	// Obstacle haut gauche
+	if(moveTo.x<XOBSTACLE_LEFT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_LEFT_TOP)
+		return 0;
+	if(moveTo.y<YOBSTACLE_LEFT_TOP+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_LEFT_TOP)
+		return 0;
+	// Obstacle bas gauche
+	if(moveTo.x<XOBSTACLE_LEFT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_LEFT_BOTTOM)
+		return 0;
+	if(moveTo.y<YOBSTACLE_LEFT_BOTTOM+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_LEFT_BOTTOM)
+		return 0;
+	// Obstacle haut gauche
+	if(moveTo.x<XOBSTACLE_RIGHT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_RIGHT_TOP)
+		return 0;
+	if(moveTo.y<YOBSTACLE_RIGHT_TOP+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_RIGHT_TOP)
+		return 0;
+	// Obstacle bas gauche
+	if(moveTo.x<XOBSTACLE_RIGHT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_RIGHT_BOTTOM)
+		return 0;
+	if(moveTo.y<YOBSTACLE_RIGHT_BOTTOM+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_RIGHT_BOTTOM)
 		return 0;
 
 	// Personnes
