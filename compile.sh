@@ -6,5 +6,5 @@
 gcc main.c positions.c -lSDL2 -lSDL2main -lm -o crow.out
 
 # Tests
-gcc -o testUtils.out utils.c testUtils.c -lSDL2 -lSDL2main
+gcc -o testUtils.out utils.c testUtils.c positions.c -lSDL2 -lSDL2main
 

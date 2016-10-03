@@ -59,39 +59,34 @@ int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, SDL_Point moveTo)
 
 	// Bordure de la fenêtre
 	if(moveTo.x<0 || moveTo.x+PEOPLE_WIDTH>=WINDOW_WIDTH)
-		return 0;
+		{printf("A\n");return 0;}
 	if(moveTo.y<0 || moveTo.y+PEOPLE_HEIGHT>=WINDOW_HEIGHT)
-		return 0;
+		{printf("B\n");return 0;}
 	// Obstacles
 	// Obstacle haut gauche
-	if(moveTo.x<XOBSTACLE_LEFT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_LEFT_TOP)
-		return 0;
-	if(moveTo.y<YOBSTACLE_LEFT_TOP+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_LEFT_TOP)
-		return 0;
+	if(moveTo.x<XOBSTACLE_LEFT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_LEFT_TOP && 
+		moveTo.y<YOBSTACLE_LEFT_TOP+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_LEFT_TOP)
+		{printf("d\n");return 0;}
 	// Obstacle bas gauche
-	if(moveTo.x<XOBSTACLE_LEFT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_LEFT_BOTTOM)
-		return 0;
-	if(moveTo.y<YOBSTACLE_LEFT_BOTTOM+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_LEFT_BOTTOM)
-		return 0;
+	if(moveTo.x<XOBSTACLE_LEFT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_LEFT_BOTTOM &&
+		moveTo.y<YOBSTACLE_LEFT_BOTTOM+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_LEFT_BOTTOM)
+		{printf("e\n");return 0;}
 	// Obstacle haut gauche
-	if(moveTo.x<XOBSTACLE_RIGHT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_RIGHT_TOP)
-		return 0;
-	if(moveTo.y<YOBSTACLE_RIGHT_TOP+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_RIGHT_TOP)
-		return 0;
+	if(moveTo.x<XOBSTACLE_RIGHT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_RIGHT_TOP &&
+		moveTo.y<YOBSTACLE_RIGHT_TOP+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_RIGHT_TOP)
+		{printf("g\n");return 0;}
 	// Obstacle bas gauche
-	if(moveTo.x<XOBSTACLE_RIGHT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_RIGHT_BOTTOM)
-		return 0;
-	if(moveTo.y<YOBSTACLE_RIGHT_BOTTOM+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_RIGHT_BOTTOM)
-		return 0;
+	if(moveTo.x<XOBSTACLE_RIGHT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=XOBSTACLE_RIGHT_BOTTOM &&
+		moveTo.y<YOBSTACLE_RIGHT_BOTTOM+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=YOBSTACLE_RIGHT_BOTTOM)
+		{printf("i\n");return 0;}
 
 	// Personnes
 	int i=0;
 	for(i=0;i<nbPeople;i++){
 		if(i!=indexPeople){
-			if(moveTo.x<peoples[i].x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=peoples[i].x)
-				return 0;
-			if(moveTo.y<peoples[i].y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=peoples[i].y)
-				return 0;
+			if(moveTo.x<peoples[i].x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>=peoples[i].x &&
+				moveTo.y<peoples[i].y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>=peoples[i].y)
+				{printf("k%d\n",i);return 0;}
 		}
 	}
 

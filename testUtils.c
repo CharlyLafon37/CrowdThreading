@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "utils.h"
+#include "positions.h"
 
 int main(){
 
@@ -50,4 +51,24 @@ int main(){
 	positionX=-1;positionY=50;
 	printf("Position (%d,%d) le déplacement est bien ERROR = %d\n"
 		,positionX,positionY,(ERROR==move_to_azimuth(positionX,positionY,azimuthX,azimuthY)));
+
+	printf("--- Test can_move\t---");
+	
+	SDL_Rect people[16];
+	spawnPeople(people, 16);
+	SDL_Point result = move_people(0, people, 16, 0, 64);
+	printf("Position avant(%d,%d)\t Position apres(%d,%d)\n",people[0].x,people[0].y,result.x,result.y);
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
