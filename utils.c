@@ -57,7 +57,7 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, int azimuthY){
 	SDL_Point result = {0,0};
 
-	SDL_POINT people = {peoples[indexPeople].x,peoples[indexPeople].y};
+	SDL_Point people = {peoples[indexPeople].x,peoples[indexPeople].y};
 
 	int direction = move_to_azimuth(people.x,people.y,azimuthX,azimuthY);
 
