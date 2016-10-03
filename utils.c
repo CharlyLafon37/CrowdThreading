@@ -122,14 +122,14 @@ SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azim
 				return people;
 		}
 		case EAST:{
-			move_to.y=people.x+1;
+			move_to.x=people.x+1;
 			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
 				return move_to;
 			else
 				return people;
 		}
 		case WEST:{
-			move_to.y=people.x-1;
+			move_to.x=people.x-1;
 			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
 				return move_to;
 			else
@@ -194,7 +194,7 @@ SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azim
 		}
 		case SOUTHWEST:{
 			move_to.y=people.y+1;
-			move_to.x=people.x+1;
+			move_to.x=people.x-1;
 			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
 				return move_to;
 			else{

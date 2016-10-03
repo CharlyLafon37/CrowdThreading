@@ -56,6 +56,8 @@ int main(){
 	
 	SDL_Rect people[16];
 	spawnPeople(people, 16);
+	people[0].x=100;
+	people[0].y=64;
 	SDL_Point result = move_people(0, people, 16, 0, 64);
 	printf("Position avant(%d,%d)\t Position apres(%d,%d)\n",people[0].x,people[0].y,result.x,result.y);
 
