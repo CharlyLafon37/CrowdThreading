@@ -20,6 +20,18 @@
 #define PEOPLE_WIDTH 4
 #define PEOPLE_HEIGHT 4
 
+#define OBSTACLE_WIDTH 16
+#define OBSTACLE_LEFT_HEIGHT 60
+#define OBSTACLE_RIGHT_HEIGHT 56
+#define XOBSTACLE_LEFT_TOP 0
+#define YOBSTACLE_LEFT_TOP 0
+#define XOBSTACLE_LEFT_BOTTOM 0
+#define YOBSTACLE_LEFT_BOTTOM WINDOW_HEIGHT-OBSTACLE_LEFT_HEIGHT
+#define XOBSTACLE_RIGHT_TOP 128-OBSTACLE_WIDTH
+#define YOBSTACLE_RIGHT_TOP 0
+#define XOBSTACLE_RIGHT_BOTTOM 128-OBSTACLE_WIDTH
+#define YOBSTACLE_RIGHT_BOTTOM  WINDOW_HEIGHT-OBSTACLE_RIGHT_HEIGHT
+
 int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY);
 
 SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, int azimuthY);
