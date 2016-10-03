@@ -59,7 +59,7 @@ SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azim
 
 	SDL_POINT people = {peoples[indexPeople].x,peoples[indexPeople].y};
 
-	int direction = move_to_azimuth(people.x,people.y,azimuthX,azimuthY);
+	int direction = move_to_azimuth(,,azimuthX,azimuthY);
 
 
 	return result;
