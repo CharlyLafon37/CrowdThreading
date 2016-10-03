@@ -13,10 +13,10 @@
 
 void obstaclesLayout(SDL_Rect obstacles[])
 {
-    obstacles[0].w = 16; obstacles[0].h = 60; obstacles[0].x = 0; obstacles[0].y = 0;
-    obstacles[1].w = 16; obstacles[1].h = 60; obstacles[1].x = 0; obstacles[1].y = WINDOW_HEIGHT - obstacles[1].h;
-    obstacles[2].w = 16; obstacles[2].h = 56; obstacles[2].x = 128 - obstacles[2].w; obstacles[2].y = 0;
-    obstacles[3].w = 16; obstacles[3].h = 56; obstacles[3].x = 128 - obstacles[3].w; obstacles[3].y = WINDOW_HEIGHT - obstacles[3].h;
+    obstacles[0].w = OBSTACLE_WIDTH; obstacles[0].h = OBSTACLE_LEFT_HEIGHT; obstacles[0].x = XOBSTACLE_LEFT_TOP; obstacles[0].y = YOBSTACLE_LEFT_TOP;
+    obstacles[1].w = OBSTACLE_WIDTH; obstacles[1].h = OBSTACLE_LEFT_HEIGHT; obstacles[1].x = XOBSTACLE_LEFT_BOTTOM; obstacles[1].y = YOBSTACLE_LEFT_BOTTOM;
+    obstacles[2].w = OBSTACLE_WIDTH; obstacles[2].h = OBSTACLE_RIGHT_HEIGHT; obstacles[2].x = XOBSTACLE_RIGHT_TOP; obstacles[2].y = YOBSTACLE_RIGHT_TOP;
+    obstacles[3].w = OBSTACLE_WIDTH; obstacles[3].h = OBSTACLE_RIGHT_HEIGHT; obstacles[3].x = XOBSTACLE_RIGHT_BOTTOM; obstacles[3].y = YOBSTACLE_RIGHT_BOTTOM;
 }
 
 void spawnPeople(SDL_Rect people[], int nbPeople)

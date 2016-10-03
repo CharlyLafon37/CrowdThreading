@@ -4,17 +4,6 @@
 #include <math.h>
 #include "positions.h"
 
-#define WINDOW_WIDTH 512
-#define WINDOW_HEIGHT 128
-#define DEFAULT_NBPEOPLE 16
-#define PEOPLE_WIDTH 4
-#define PEOPLE_HEIGHT 4
-#define XMIN_PEOPLE 129
-#define YMIN_PEOPLE 0
-#define XMAX_PEOPLE WINDOW_WIDTH-PEOPLE_WIDTH
-#define YMAX_PEOPLE WINDOW_HEIGHT-PEOPLE_HEIGHT
-
-
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople);
 void print(SDL_Renderer* renderer, SDL_Rect obstacles[], SDL_Rect people[], int nbPeople);
 
@@ -39,8 +28,8 @@ int main(int argc, char** argv)
     window = SDL_CreateWindow("CrowdThreading",
                                SDL_WINDOWPOS_CENTERED,
                                SDL_WINDOWPOS_CENTERED,
-                               512,
-                               128,
+                               WINDOW_WIDTH,
+                               WINDOW_HEIGHT,
                                SDL_WINDOW_SHOWN);
     if(!window)
     {
