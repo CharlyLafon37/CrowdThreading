@@ -55,7 +55,7 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 	Retourne 1 si la personne peut se deplacer au point indique.
 	Sinon, renvoie 0;
 */
-int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, SDL_Point moveTo){
+int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, SDL_Point moveTo){
 
 	// Bordure de la fenêtre
 	if(moveTo.x<0 || moveTo.x+PEOPLE_WIDTH>=WINDOW_WIDTH)
@@ -84,25 +84,126 @@ int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, SDL
 	Renvoie un point pour le deplacement de la personne en paramètre.
 */
 SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, int azimuthY){
-	SDL_Point result = {0,0};
 
 	SDL_Point people = {peoples[indexPeople].x,peoples[indexPeople].y};
+	SDL_Point move_to = {people.x,people.y};
 
 	int direction = move_to_azimuth(people.x,people.y,azimuthX,azimuthY);
 	
 	switch(direction){
 		case STAY:{
-			result.x=people.x;
-			result.y=people.y;
-			break;
+			return people;
+		}// 4 points cardinaux
+		case NORTH:{
+			move_to.y=people.y-1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else
+				return people;
+		}
+		case SOUTH:{
+			move_to.y=people.y+1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else
+				return people;
+		}
+		case EAST:{
+			move_to.y=people.x+1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else
+				return people;
+		}
+		case WEST:{
+			move_to.y=people.x-1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else
+				return people;
+		}//4 diagonales
+		case NORTHEAST:{
+			move_to.y=people.y-1;
+			move_to.x=people.x+1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else{
+				move_to.x=people.x;
+				if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+					return move_to;
+				else{
+					move_to.y=people.y;
+					move_to.x=people.x+1;
+					if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+						return move_to;
+					else
+						return people;
+				}
+			}
+		}
+		case SOUTHEAST:{
+			move_to.y=people.y+1;
+			move_to.x=people.x+1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else{
+				move_to.x=people.x;
+				if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+					return move_to;
+				else{
+					move_to.y=people.y;
+					move_to.x=people.x+1;
+					if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+						return move_to;
+					else
+						return people;
+				}
+			}
+		}
+		case NORTHWEST:{
+			move_to.y=people.y-1;
+			move_to.x=people.x-1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else{
+				move_to.x=people.x;
+				if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+					return move_to;
+				else{
+					move_to.y=people.y;
+					move_to.x=people.x-1;
+					if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+						return move_to;
+					else
+						return people;
+				}
+			}
+		}
+		case SOUTHWEST:{
+			move_to.y=people.y+1;
+			move_to.x=people.x+1;
+			if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+				return move_to;
+			else{
+				move_to.x=people.x;
+				if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+					return move_to;
+				else{
+					move_to.y=people.y;
+					move_to.x=people.x+1;
+					if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
+						return move_to;
+					else
+						return people;
+				}
+			}
 		}
 		default:{
-			result.x=-1;
-			result.y=-1;
+			return people;
 		}
 	}
 
-	return result;
+	return people;
 }
 
 
