@@ -8,6 +8,8 @@
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople);
 void print(SDL_Renderer* renderer, SDL_Rect obstacles[], SDL_Rect people[], int nbPeople);
 
+int option_thread=0;
+
 int main(int argc, char** argv)
 {
     /**** Arguments handling ****/
@@ -93,6 +95,14 @@ void argumentsTreatment(char** argv, int nbArguments, int* nbPeople)
                 char temp[2];
                 temp[0] = argv[i][2];
                 *nbPeople = pow(2, atoi(temp));
+            }else if(argv[i][1] == 't'){
+                if(argv[i][2] == '0'){
+                    option_thread=0;
+                }else if(argv[i][2] == '1'){
+                    option_thread=1;
+                }else if(argv[i][2] == '2'){
+                    option_thread=2;
+                }
             }
         }
     }
