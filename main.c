@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     
     /****/
     int i, j;
-    for(i = 0; i < 100; i++)
+    for(i = 0; i < 250; i++)
     {
         for(j = 0; j < nbPeople; j++)
         {
@@ -66,11 +66,9 @@ int main(int argc, char** argv)
             
             people[j].x = newPosition.x;
             people[j].y = newPosition.y;
-            printf("%d  ", people[j].x);
-            printf("%d\n", people[j].y);
         }
         print(renderer, obstacles, people, nbPeople);
-        SDL_Delay(100);
+        SDL_Delay(50);
     }
     
     SDL_Delay(5000); // Attendre cinq secondes, que l'utilisateur voie la fenêtre
