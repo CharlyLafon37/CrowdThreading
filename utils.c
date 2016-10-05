@@ -203,7 +203,7 @@ SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azim
 					return move_to;
 				else{
 					move_to.y=people.y;
-					move_to.x=people.x+1;
+					move_to.x=people.x-1;
 					if(can_move(indexPeople, peoples, nbPeople, move_to)==1)
 						return move_to;
 					else
