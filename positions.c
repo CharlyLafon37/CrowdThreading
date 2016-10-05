@@ -19,7 +19,7 @@ void obstaclesLayout(SDL_Rect obstacles[])
     obstacles[3].w = OBSTACLE_WIDTH; obstacles[3].h = OBSTACLE_RIGHT_HEIGHT; obstacles[3].x = XOBSTACLE_RIGHT_BOTTOM; obstacles[3].y = YOBSTACLE_RIGHT_BOTTOM;
 }
 
-void spawnPeople(SDL_Rect people[], int nbPeople) // MISSING : PEOPLE SPAWNING OF EACH OTHER
+void spawnPeople(SDL_Rect people[], int nbPeople)
 {
     int i,j,k;
     srand(time(NULL));
