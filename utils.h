@@ -6,6 +6,7 @@
 #define UTILS
 
 #include <SDL2/SDL.h>
+#include "main.h"
 
 #define ERROR -1
 #define STAY 0
@@ -38,6 +39,6 @@
 
 int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY);
 
-SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, int azimuthY);
+SDL_Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY);
 
 #endif

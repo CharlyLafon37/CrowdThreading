@@ -19,7 +19,7 @@ void obstaclesLayout(SDL_Rect obstacles[])
     obstacles[3].w = OBSTACLE_WIDTH; obstacles[3].h = OBSTACLE_RIGHT_HEIGHT; obstacles[3].x = XOBSTACLE_RIGHT_BOTTOM; obstacles[3].y = YOBSTACLE_RIGHT_BOTTOM;
 }
 
-void spawnPeople(SDL_Rect people[], int nbPeople)
+void spawnPeople(Person people[], int nbPeople)
 {
     int i,j,k;
     srand(time(NULL));
@@ -36,19 +36,21 @@ void spawnPeople(SDL_Rect people[], int nbPeople)
    
     for(i = 0; i < nbPeople; i++)
     {
-        people[i].w = PEOPLE_WIDTH;
-        people[i].h = PEOPLE_HEIGHT;
+        people[i].person.w = PEOPLE_WIDTH;
+        people[i].person.h = PEOPLE_HEIGHT;
+        
         int randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
         int randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
-
         while(plateau[randX][randY]==1 || plateau[randX+PEOPLE_WIDTH-1][randY+PEOPLE_HEIGHT-1]==1
               ||plateau[randX][randY+PEOPLE_HEIGHT-1]==1 || plateau[randX+PEOPLE_WIDTH-1][randY]==1)
         {
             randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
             randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
         }
-        people[i].x = randX;
-        people[i].y = randY;
+        people[i].person.x = randX;
+        people[i].person.y = randY;
+        
+        people[i].isArrived = 0;
         
         for(j=randX;j<randX+PEOPLE_WIDTH;j++)
         {

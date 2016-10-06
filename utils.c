@@ -55,7 +55,7 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 	Retourne 1 si la personne peut se deplacer au point indique.
 	Sinon, renvoie 0;
 */
-int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, SDL_Point moveTo){
+int can_move(int indexPeople, Person* peoples, int nbPeople, SDL_Point moveTo){
 
 	// Bordure de la fenêtre
 	if(moveTo.x<0 || moveTo.x+PEOPLE_WIDTH>=WINDOW_WIDTH)
@@ -84,9 +84,11 @@ int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, SDL_Point moveTo)
 	int i=0;
 	for(i=0;i<nbPeople;i++){
 		if(i!=indexPeople){
-			if(moveTo.x<peoples[i].x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>peoples[i].x &&
-				moveTo.y<peoples[i].y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>peoples[i].y)
-				{return 0;}
+            if(peoples[i].isArrived == 0){
+                if(moveTo.x<peoples[i].person.x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>peoples[i].person.x &&
+                   moveTo.y<peoples[i].person.y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>peoples[i].person.y)
+                {return 0;}
+            }
 		}
 	}
 
@@ -96,9 +98,9 @@ int can_move(int indexPeople, SDL_Rect* peoples, int nbPeople, SDL_Point moveTo)
 /*
 	Renvoie un point pour le deplacement de la personne en paramètre.
 */
-SDL_Point move_people(int indexPeople, SDL_Rect* peoples, int nbPeople, int azimuthX, int azimuthY){
+SDL_Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY){
 
-	SDL_Point people = {peoples[indexPeople].x,peoples[indexPeople].y};
+	SDL_Point people = {peoples[indexPeople].person.x,peoples[indexPeople].person.y};
 	SDL_Point move_to = {people.x,people.y};
 
 	int direction = move_to_azimuth(people.x,people.y,azimuthX,azimuthY);

@@ -12,6 +12,7 @@
 
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include "main.h"
 
 #define WINDOW_WIDTH 512
 #define WINDOW_HEIGHT 128
@@ -40,6 +41,6 @@
 #define YAZIMUTH 60
 
 void obstaclesLayout(SDL_Rect obstacles[]);
-void spawnPeople(SDL_Rect people[], int nbPeople);
+void spawnPeople(Person people[], int nbPeople);
 
 #endif
