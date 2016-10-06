@@ -5,7 +5,6 @@
 #ifndef UTILS
 #define UTILS
 
-#include <SDL2/SDL.h>
 #include "main.h"
 
 #define ERROR -1

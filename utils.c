@@ -10,8 +10,6 @@
 #include <SDL2/SDL.h>
 #include "utils.h"
 
-
-
 /*
 	Renvoie un entier selon la direction à suivre.
 	return : NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, STAY, ERROR.

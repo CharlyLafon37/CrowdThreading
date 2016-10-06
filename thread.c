@@ -1,28 +1,25 @@
 /*
-	positions.c
+	thread.c
 	Projet concurrence SI4
 	Auteurs : Lafon, Monzein
 
 	Fonctions et procédures de calculs non graphique.
 */
 
+#include <SDL2/SDL.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
+#include <pthread.h>
+#include "thread.h"
 #include "positions.h"
+#include "utils.h"
 
-void obstaclesLayout(SDL_Rect obstacles[])
-{
-    obstacles[0].w = OBSTACLE_WIDTH; obstacles[0].h = OBSTACLE_LEFT_HEIGHT; obstacles[0].x = XOBSTACLE_LEFT_TOP; obstacles[0].y = YOBSTACLE_LEFT_TOP;
-    obstacles[1].w = OBSTACLE_WIDTH; obstacles[1].h = OBSTACLE_LEFT_HEIGHT; obstacles[1].x = XOBSTACLE_LEFT_BOTTOM; obstacles[1].y = YOBSTACLE_LEFT_BOTTOM;
-    obstacles[2].w = OBSTACLE_WIDTH; obstacles[2].h = OBSTACLE_RIGHT_HEIGHT; obstacles[2].x = XOBSTACLE_RIGHT_TOP; obstacles[2].y = YOBSTACLE_RIGHT_TOP;
-    obstacles[3].w = OBSTACLE_WIDTH; obstacles[3].h = OBSTACLE_RIGHT_HEIGHT; obstacles[3].x = XOBSTACLE_RIGHT_BOTTOM; obstacles[3].y = YOBSTACLE_RIGHT_BOTTOM;
-}
-
-void spawnPeople(Person people[], int nbPeople)
+void spawnPeopleThread(Person people[], int nbPeople)
 {
     int i,j,k;
     srand(time(NULL));
-
+    
     // Initialisation du plateau pour verifier la position des personnes.
     int plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
     for(i=0;i<WINDOW_WIDTH;i++)
@@ -32,7 +29,10 @@ void spawnPeople(Person people[], int nbPeople)
             plateau[i][j]=0;
         }
     }
-   
+    
+    pthread_t threads[nbPeople];
+    thread_person_data datas[nbPeople];
+    
     for(i = 0; i < nbPeople; i++)
     {
         people[i].person.w = PEOPLE_WIDTH;
@@ -40,6 +40,7 @@ void spawnPeople(Person people[], int nbPeople)
         
         int randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
         int randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
+        
         while(plateau[randX][randY]==1 || plateau[randX+PEOPLE_WIDTH-1][randY+PEOPLE_HEIGHT-1]==1
               ||plateau[randX][randY+PEOPLE_HEIGHT-1]==1 || plateau[randX+PEOPLE_WIDTH-1][randY]==1)
         {
@@ -58,5 +59,36 @@ void spawnPeople(Person people[], int nbPeople)
                 plateau[j][k]=1;
             }
         }
+        // Création du thread de la personne.
+        datas[i].n=i;
+        datas[i].nbPeople=nbPeople;
+        datas[i].people=people;
+        printf("creation du thread %d\n",i);
+        if(pthread_create(&threads[i],NULL,thread_person,&datas[i])==-1){
+            perror("pthread_create");
+            return;
+        }
+        if(pthread_join(threads[i],NULL)){
+            perror("pthread_join");
+            return;
+        }
+        printf("apres creation du thread %d\n",i);
     }
+}
+
+void *thread_person(thread_person_data *arg){
+    
+    int i;
+    printf("Debut du thread de la personne %d\n",arg->n);
+    
+    for(i=0;i<500;i++)
+    {
+        SDL_Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH);
+        
+        arg->people[arg->n].person.x = newPosition.x;
+        arg->people[arg->n].person.y = newPosition.y;
+        SDL_Delay(20);
+    }
+    pthread_exit(NULL);
+    
 }
