@@ -68,11 +68,11 @@ void spawnPeopleThread(Person people[], int nbPeople)
             perror("pthread_create");
             return;
         }
-        if(pthread_join(threads[i],NULL)){
+        /*if(pthread_join(threads[i],NULL)){
             perror("pthread_join");
             return;
         }
-        printf("apres creation du thread %d\n",i);
+        printf("apres creation du thread %d\n",i);*/
     }
 }
 
