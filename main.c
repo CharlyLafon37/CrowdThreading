@@ -45,7 +45,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
     
-    /**** Initialisation of entities' position ****/    
+    /**** Initialisation of entities' position ****/
     SDL_Rect obstacles[4];
     Person people[nbPeople];
     
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
                 people[i].person.x = newPosition.x;
                 people[i].person.y = newPosition.y;
                 
-                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH)
+                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH && people[i].isArrived == 0)
                 {
                     people[i].isArrived = 1;
 					restant--;
