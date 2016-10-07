@@ -1,1 +1,1 @@
-rm -f *.o *.out *.ps \#* *~
+rm -f bin/*.o bin/*.out bin/*.ps \#* *~

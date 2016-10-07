@@ -49,16 +49,18 @@ int main(int argc, char** argv)
     Person people[nbPeople];
     
     obstaclesLayout(obstacles);
-	int restant=nbPeople;
+    
+	int restant = nbPeople;
 
     if(option_thread == 0) // Si on simule sur 1 seul thread.
     {
+        printf("%d\n", restant);
 	    spawnPeople(people, nbPeople);
 	    
 	    print(renderer, obstacles, people, nbPeople);
         
         int i;
-	    while(restant>0/*everyOneIsArrived(people, nbPeople) == 0*/)
+	    while(restant > 0)
 	    {
             for(i = 0; i < nbPeople; i++)
             {
@@ -67,13 +69,15 @@ int main(int argc, char** argv)
                 people[i].person.x = newPosition.x;
                 people[i].person.y = newPosition.y;
                 
-                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH){
+                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH)
+                {
                     people[i].isArrived = 1;
 					restant--;
 				}
             }
             print(renderer, obstacles, people, nbPeople);
-            SDL_Delay(30);
+            printf("%d\n", restant);
+            SDL_Delay(100);
 	    }
     }
     else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
@@ -87,7 +91,7 @@ int main(int argc, char** argv)
 		int i;
 		while(i<300 && restant>0)
         {
-i++;SDL_Delay(50);
+            i++;SDL_Delay(50);
 			print(renderer, obstacles, people, nbPeople); // Rendu graphique
 		}
     }
