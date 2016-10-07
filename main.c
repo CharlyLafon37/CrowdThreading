@@ -54,7 +54,6 @@ int main(int argc, char** argv)
 
     if(option_thread == 0) // Si on simule sur 1 seul thread.
     {
-        printf("%d\n", restant);
 	    spawnPeople(people, nbPeople);
 	    
 	    print(renderer, obstacles, people, nbPeople);
@@ -76,8 +75,7 @@ int main(int argc, char** argv)
 				}
             }
             print(renderer, obstacles, people, nbPeople);
-            printf("%d\n", restant);
-            SDL_Delay(100);
+            SDL_Delay(30);
 	    }
     }
     else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
