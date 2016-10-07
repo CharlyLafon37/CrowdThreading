@@ -10,7 +10,7 @@
 #ifndef POSITIONS
 #define POSITIONS
 
-#include <SDL2/SDL.h>
+#include <stdio.h>
 #include "main.h"
 
 #define WINDOW_WIDTH 512
@@ -38,7 +38,6 @@
 #define XAZIMUTH 0
 #define YAZIMUTH 60
 
-void obstaclesLayout(SDL_Rect obstacles[]);
 void spawnPeople(Person people[], int nbPeople);
 
 #endif
