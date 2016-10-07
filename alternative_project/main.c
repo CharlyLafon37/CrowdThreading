@@ -26,6 +26,9 @@ int main(int argc, char** argv)
     {
 	    spawnPeople(people, nbPeople);
         
+        if(option_mesure == 0)
+            printf("Personnes non sorties : %d\n", restant);
+        
         int i;
 	    while(restant > 0)
 	    {
@@ -40,9 +43,10 @@ int main(int argc, char** argv)
                 {
                     people[i].isArrived = 1;
 					restant--;
+                    if(option_mesure == 0)
+                        printf("Personnes non sorties : %d\n", restant);
 				}
             }
-            printf("%d\n", restant);
             usleep(30000);
 	    }
     }
@@ -55,7 +59,7 @@ int main(int argc, char** argv)
 		spawnPeopleThread(people, nbPeople, &restant); // Création des personnes et de leur thread.
 
 		int i;
-		while(i<300 && restant>0)
+		while(i < 300 && restant > 0)
         {
             i++;
             usleep(50000);

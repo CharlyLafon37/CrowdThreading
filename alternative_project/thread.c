@@ -89,7 +89,7 @@ void *thread_person(thread_person_data *arg){
     }
     arg->people[arg->n].isArrived = 1;
     (*(arg->restant))--;
-    printf("rest %d\n",*(arg->restant));
+    printf("Personnes non sorties : %d\n",*(arg->restant));
     pthread_exit(NULL);
     
 }
