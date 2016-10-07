@@ -148,14 +148,3 @@ void print(SDL_Renderer* renderer, SDL_Rect obstacles[], Person people[], int nb
     
     SDL_RenderPresent(renderer); // Rendering on screen
 }
-
-int everyOneIsArrived(Person people[], int nbPeople)
-{
-    int i;
-    for(i = 0; i < nbPeople; i++)
-    {
-        if(people[i].isArrived == 0)
-            return 0;
-    }
-    return 1;
-}

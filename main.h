@@ -27,6 +27,5 @@ struct thread_person_data
 
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread);
 void print(SDL_Renderer* renderer, SDL_Rect obstacles[], Person people[], int nbPeople);
-int everyOneIsArrived(Person people[], int nbPeople); // 0 if some people are not arrived, 1 if everybody is arrived
 
 #endif
