@@ -15,7 +15,7 @@
 #include "positions.h"
 #include "utils.h"
 
-void spawnPeopleThread(Person people[], int nbPeople)
+void spawnPeopleThread(Person people[], int nbPeople, int *restant)
 {
     int i,j,k;
     srand(time(NULL));
@@ -61,6 +61,7 @@ void spawnPeopleThread(Person people[], int nbPeople)
         }
         // Création du thread de la personne.
         datas[i].n=i;
+	datas[i].restant=restant;
         datas[i].nbPeople=nbPeople;
         datas[i].people=people;
         printf("creation du thread %d\n",i);
@@ -81,7 +82,7 @@ void *thread_person(thread_person_data *arg){
     int i;
     printf("Debut du thread de la personne %d\n",arg->n);
     
-    for(i=0;i<500;i++)
+    while(arg->people[arg->n].person.x!=XAZIMUTH || arg->people[arg->n].person.y!=YAZIMUTH)
     {
         SDL_Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH);
         
@@ -89,6 +90,9 @@ void *thread_person(thread_person_data *arg){
         arg->people[arg->n].person.y = newPosition.y;
         SDL_Delay(20);
     }
+    arg->people[arg->n].isArrived = 1;
+    (*(arg->restant))--;
+    printf("rest %d\n",*(arg->restant));
     pthread_exit(NULL);
     
 }
