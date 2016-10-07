@@ -11,9 +11,10 @@ int main(int argc, char** argv)
     /**** Arguments handling ****/
     int nbPeople = DEFAULT_NBPEOPLE;
     int option_thread = DEFAULT_THREAD;
+    int option_mesure = DEFAULT_MESURE;
     
     if(argc != 1)
-        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread);
+        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread, &option_mesure);
     
     /**** Initialisation of SDL structures ****/
     SDL_Window* window = NULL;
@@ -44,7 +45,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
     
-    /**** Initialisation of entities' position ****/
+    /**** Initialisation of entities' position ****/    
     SDL_Rect obstacles[4];
     Person people[nbPeople];
     
@@ -102,7 +103,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread)
+void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure)
 {
     int i;
     for(i = 1; i <= nbArguments; i++) // Begins to 1 because first argument = name of executable
@@ -120,6 +121,10 @@ void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option
                 if(argv[i][2] == '0') *option_thread=0;
                 else if(argv[i][2] == '1') *option_thread=1;
                 else if(argv[i][2] == '2') *option_thread=2;
+            }
+            else if(argv[i][1] == 'm')
+            {
+                *option_mesure = 1;
             }
         }
     }
