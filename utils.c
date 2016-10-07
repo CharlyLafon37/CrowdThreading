@@ -83,8 +83,8 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, SDL_Point moveTo){
 	for(i=0;i<nbPeople;i++){
 		if(i!=indexPeople){
             if(peoples[i].isArrived == 0){
-                if(moveTo.x<peoples[i].person.x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>peoples[i].person.x &&
-                   moveTo.y<peoples[i].person.y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>peoples[i].person.y)
+                if(moveTo.x<peoples[i].position.x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>peoples[i].position.x &&
+                   moveTo.y<peoples[i].position.y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>peoples[i].position.y)
                 {return 0;}
             }
 		}
@@ -98,7 +98,7 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, SDL_Point moveTo){
 */
 SDL_Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY){
 
-	SDL_Point people = {peoples[indexPeople].person.x,peoples[indexPeople].person.y};
+	SDL_Point people = {peoples[indexPeople].position.x,peoples[indexPeople].position.y};
 	SDL_Point move_to = {people.x,people.y};
 
 	int direction = move_to_azimuth(people.x,people.y,azimuthX,azimuthY);

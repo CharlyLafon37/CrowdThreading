@@ -35,8 +35,8 @@ void spawnPeople(Person people[], int nbPeople)
    
     for(i = 0; i < nbPeople; i++)
     {
-        people[i].person.w = PEOPLE_WIDTH;
-        people[i].person.h = PEOPLE_HEIGHT;
+        people[i].position.w = PEOPLE_WIDTH;
+        people[i].position.h = PEOPLE_HEIGHT;
         
         int randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
         int randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
@@ -46,8 +46,8 @@ void spawnPeople(Person people[], int nbPeople)
             randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
             randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
         }
-        people[i].person.x = randX;
-        people[i].person.y = randY;
+        people[i].position.x = randX;
+        people[i].position.y = randY;
         
         people[i].isArrived = 0;
         

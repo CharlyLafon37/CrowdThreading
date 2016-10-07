@@ -14,7 +14,7 @@
 typedef struct Person Person;
 struct Person
 {
-    SDL_Rect person;
+    SDL_Rect position;
     int isArrived;
 };
 typedef struct thread_person_data thread_person_data;

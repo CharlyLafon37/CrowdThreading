@@ -66,10 +66,10 @@ int main(int argc, char** argv)
             {
                 SDL_Point newPosition = move_people(i, people, nbPeople, XAZIMUTH, YAZIMUTH);
 		    
-                people[i].person.x = newPosition.x;
-                people[i].person.y = newPosition.y;
+                people[i].position.x = newPosition.x;
+                people[i].position.y = newPosition.y;
                 
-                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH && people[i].isArrived == 0)
+                if(people[i].position.x == XAZIMUTH && people[i].position.y == YAZIMUTH && people[i].isArrived == 0)
                 {
                     people[i].isArrived = 1;
 					restant--;
@@ -146,7 +146,7 @@ void print(SDL_Renderer* renderer, SDL_Rect obstacles[], Person people[], int nb
     int i;
     for(i = 0; i < nbPeople; i++)
     {
-        SDL_RenderFillRect(renderer, &(people[i].person));
+        SDL_RenderFillRect(renderer, &(people[i].position));
     }
     
     SDL_RenderPresent(renderer); // Rendering on screen

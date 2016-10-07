@@ -35,8 +35,8 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant)
     
     for(i = 0; i < nbPeople; i++)
     {
-        people[i].person.w = PEOPLE_WIDTH;
-        people[i].person.h = PEOPLE_HEIGHT;
+        people[i].position.w = PEOPLE_WIDTH;
+        people[i].position.h = PEOPLE_HEIGHT;
         
         int randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
         int randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
@@ -47,8 +47,8 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant)
             randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
             randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
         }
-        people[i].person.x = randX;
-        people[i].person.y = randY;
+        people[i].position.x = randX;
+        people[i].position.y = randY;
         
         people[i].isArrived = 0;
         
@@ -82,12 +82,12 @@ void *thread_person(thread_person_data *arg){
     int i;
     printf("Debut du thread de la personne %d\n",arg->n);
     
-    while(arg->people[arg->n].person.x!=XAZIMUTH || arg->people[arg->n].person.y!=YAZIMUTH)
+    while(arg->people[arg->n].position.x!=XAZIMUTH || arg->people[arg->n].position.y!=YAZIMUTH)
     {
         SDL_Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH);
         
-        arg->people[arg->n].person.x = newPosition.x;
-        arg->people[arg->n].person.y = newPosition.y;
+        arg->people[arg->n].position.x = newPosition.x;
+        arg->people[arg->n].position.y = newPosition.y;
         SDL_Delay(20);
     }
     arg->people[arg->n].isArrived = 1;
