@@ -17,14 +17,6 @@ struct Person
     SDL_Rect position;
     int isArrived;
 };
-typedef struct thread_person_data thread_person_data;
-struct thread_person_data
-{
-    int n;
-    int *restant;
-    int nbPeople;
-    Person* people;
-};
 
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure);
 void print(SDL_Renderer* renderer, SDL_Rect obstacles[], Person people[], int nbPeople);

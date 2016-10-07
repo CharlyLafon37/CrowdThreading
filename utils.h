@@ -36,8 +36,15 @@
 #define XOBSTACLE_RIGHT_BOTTOM 128-OBSTACLE_WIDTH
 #define YOBSTACLE_RIGHT_BOTTOM  WINDOW_HEIGHT-OBSTACLE_RIGHT_HEIGHT
 
+#define XTHREAD_FIRST 0
+#define XTHREAD_SECOND WINDOW_WIDTH/4
+#define XTHREAD_THIRD WINDOW_WIDTH/2
+#define XTHREAD_FOURTH 3*WINDOW_WIDTH/4
+
 int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY);
 
 SDL_Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY);
+
+int indice_thread(int x, int y);
 
 #endif
