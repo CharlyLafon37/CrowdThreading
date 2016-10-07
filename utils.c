@@ -30,7 +30,7 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 			return WEST;
 	} 
 	// Si il faut se deplacer vers l'est.
-	else if(positionX<azimuthY){
+	else if(positionX<azimuthX){
 		if(positionY>azimuthY)
 			return NORTHEAST;
 		else if(positionY<azimuthY)
@@ -102,7 +102,6 @@ SDL_Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimu
 	SDL_Point move_to = {people.x,people.y};
 
 	int direction = move_to_azimuth(people.x,people.y,azimuthX,azimuthY);
-	
 	switch(direction){
 		case STAY:{
 			return people;
