@@ -9,6 +9,7 @@
 
 #define DEFAULT_NBPEOPLE 16
 #define DEFAULT_THREAD 0
+#define DEFAULT_MESURE 0
 
 typedef struct Person Person;
 struct Person
@@ -25,8 +26,7 @@ struct thread_person_data
     Person* people;
 };
 
-void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread);
+void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure);
 void print(SDL_Renderer* renderer, SDL_Rect obstacles[], Person people[], int nbPeople);
-int everyOneIsArrived(Person people[], int nbPeople); // 0 if some people are not arrived, 1 if everybody is arrived
 
 #endif

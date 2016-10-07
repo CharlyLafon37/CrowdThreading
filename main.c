@@ -11,9 +11,10 @@ int main(int argc, char** argv)
     /**** Arguments handling ****/
     int nbPeople = DEFAULT_NBPEOPLE;
     int option_thread = DEFAULT_THREAD;
+    int option_mesure = DEFAULT_MESURE;
     
     if(argc != 1)
-        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread);
+        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread, &option_mesure);
     
     /**** Initialisation of SDL structures ****/
     SDL_Window* window = NULL;
@@ -44,12 +45,13 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
     
-    /**** Initialisation of entities' position ****/
+    /**** Initialisation of entities' position ****/    
     SDL_Rect obstacles[4];
     Person people[nbPeople];
     
     obstaclesLayout(obstacles);
-	int restant=nbPeople;
+    
+	int restant = nbPeople;
 
     if(option_thread == 0) // Si on simule sur 1 seul thread.
     {
@@ -58,7 +60,7 @@ int main(int argc, char** argv)
 	    print(renderer, obstacles, people, nbPeople);
         
         int i;
-	    while(restant>0/*everyOneIsArrived(people, nbPeople) == 0*/)
+	    while(restant > 0)
 	    {
             for(i = 0; i < nbPeople; i++)
             {
@@ -67,7 +69,8 @@ int main(int argc, char** argv)
                 people[i].person.x = newPosition.x;
                 people[i].person.y = newPosition.y;
                 
-                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH){
+                if(people[i].person.x == XAZIMUTH && people[i].person.y == YAZIMUTH)
+                {
                     people[i].isArrived = 1;
 					restant--;
 				}
@@ -87,7 +90,7 @@ int main(int argc, char** argv)
 		int i;
 		while(i<300 && restant>0)
         {
-i++;SDL_Delay(50);
+            i++;SDL_Delay(50);
 			print(renderer, obstacles, people, nbPeople); // Rendu graphique
 		}
     }
@@ -100,7 +103,7 @@ i++;SDL_Delay(50);
     return 0;
 }
 
-void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread)
+void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure)
 {
     int i;
     for(i = 1; i <= nbArguments; i++) // Begins to 1 because first argument = name of executable
@@ -118,6 +121,10 @@ void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option
                 if(argv[i][2] == '0') *option_thread=0;
                 else if(argv[i][2] == '1') *option_thread=1;
                 else if(argv[i][2] == '2') *option_thread=2;
+            }
+            else if(argv[i][1] == 'm')
+            {
+                *option_mesure = 1;
             }
         }
     }
@@ -143,15 +150,4 @@ void print(SDL_Renderer* renderer, SDL_Rect obstacles[], Person people[], int nb
     }
     
     SDL_RenderPresent(renderer); // Rendering on screen
-}
-
-int everyOneIsArrived(Person people[], int nbPeople)
-{
-    int i;
-    for(i = 0; i < nbPeople; i++)
-    {
-        if(people[i].isArrived == 0)
-            return 0;
-    }
-    return 1;
 }
