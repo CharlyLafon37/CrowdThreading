@@ -19,7 +19,13 @@
 #define WEST 7
 #define NORTHWEST 8
 
+#define XTHREAD_FIRST 0
+#define XTHREAD_SECOND WINDOW_WIDTH/4
+#define XTHREAD_THIRD WINDOW_WIDTH/2
+#define XTHREAD_FOURTH 3*WINDOW_WIDTH/4
+
 int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY);
 Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY);
+int indice_thread(int x, int y);
 
 #endif
