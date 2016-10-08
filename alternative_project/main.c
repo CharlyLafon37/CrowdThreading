@@ -47,7 +47,6 @@ int main(int argc, char** argv)
                         printf("Personnes non sorties : %d\n", restant);
 				}
             }
-            usleep(30000);
 	    }
     }
     else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
@@ -59,10 +58,9 @@ int main(int argc, char** argv)
 		spawnPeopleThread(people, nbPeople, &restant); // Création des personnes et de leur thread.
 
 		int i;
-		while(i < 300 && restant > 0)
+		while(i < 1000 && restant > 0)
         {
             i++;
-            usleep(50000);
 		}
     }
     

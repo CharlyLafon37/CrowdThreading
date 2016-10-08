@@ -85,7 +85,6 @@ void *thread_person(thread_person_data *arg){
         
         arg->people[arg->n].x = newPosition.x;
         arg->people[arg->n].y = newPosition.y;
-        usleep(20000);
     }
     arg->people[arg->n].isArrived = 1;
     (*(arg->restant))--;
