@@ -16,7 +16,6 @@ typedef struct thread_person_data thread_person_data;
 struct thread_person_data
 {
     int n;
-    int *restant;
     int nbPeople;
     Person* people;
 };

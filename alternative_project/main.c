@@ -70,22 +70,10 @@ int main(int argc, char** argv)
     else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
     {
         spawnPeopleThreadSpace(people, nbPeople, &restant); // Création des personnes et de leur thread.
-        
-        int i;
-        while(i<300 && restant>0)
-        {
-            i++;
-        }
     }
     else if(option_thread == 2) // Si on simule avec un thread par personne.
     {
 		spawnPeopleThread(people, nbPeople, &restant); // Création des personnes et de leur thread.
-
-		int i;
-		while(i < 1000 && restant > 0)
-        {
-            i++;
-		}
     }
     
     return 0;
