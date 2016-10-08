@@ -45,6 +45,23 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
     
+	//test
+	
+	/*int i=0,a=4,b=3;
+	int tab[2][5];
+	//int tab1[]={1,2,3,4,-1};
+	//int tab2[]={6,7,8,-1,-1};
+	tab[0][0]=1;tab[0][1]=2;tab[0][2]=3;tab[0][3]=4;tab[0][4]=-1;
+	tab[1][0]=6;tab[1][1]=7;tab[1][2]=8;tab[1][3]=-1;tab[1][4]=-1;
+	printf("test a%d b%d\n",a,b);
+	for(i=0;i<5;i++)
+		printf("%d,%d\t",tab[0][i],tab[1][i]);
+	printf("\n");
+	move_index_people(&a, &b,tab[0], tab[1], 1);
+	for(i=0;i<5;i++)
+		printf("%d,%d\t",tab[0][i],tab[1][i]);
+	printf("a%d b%d\n",a,b);/*
+
     /**** Initialisation of entities' position ****/
     SDL_Rect obstacles[4];
     Person people[nbPeople];

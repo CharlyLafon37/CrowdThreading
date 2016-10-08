@@ -47,4 +47,6 @@ SDL_Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimu
 
 int indice_thread(int x, int y);
 
+void move_index_people(int* nb_people_1, int* nb_people_2, int tab1[], int tab2[], int index);
+
 #endif

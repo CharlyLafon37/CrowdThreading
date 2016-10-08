@@ -233,4 +233,26 @@ int indice_thread(int x, int y){
 		return 3;
 }
 
+/*
+	Deplacement d'un tableau à un autre de l'indice d'un personnage
+*/
+void move_index_people(int* nb_people_1, int* nb_people_2, int tab1[], int tab2[], int index){
+
+	// Garder en mémoire l'index de la personne
+	int temp=tab1[index];
+	
+	// Ajouter l'index de la personne sur le nouveau tableau
+	tab2[(*(nb_people_2))]=temp;
+	(*(nb_people_2))=(*(nb_people_2))+1;
+
+	// Supprimer l'index du tableau 1
+	int i=0;
+	for(i=index;i<(*(nb_people_1))-1;i++){
+		tab1[i]=tab1[i+1];
+	}
+	tab1[--(*(nb_people_1))]=-1;
+}
+
+
+
 

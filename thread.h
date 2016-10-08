@@ -25,8 +25,8 @@ struct thread_space_data
     int *restant;
     int nbPeople;
     Person* people;
-	int nbPeopleSpace;
-	int* peopleSpace;
+	int* nbPeopleSpace;
+	int** peopleSpace;
 };
 
 void spawnPeopleThread(Person people[], int nbPeople, int *restant);
