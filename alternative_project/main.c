@@ -1,3 +1,9 @@
+/*
+	main.c
+	Projet concurrence SI4
+	Auteurs : Lafon, Monzein
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

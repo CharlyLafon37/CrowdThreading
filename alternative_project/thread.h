@@ -1,6 +1,9 @@
 /*
 	thread.h
-*/
+	Projet concurrence SI4
+	Auteurs : Lafon, Monzein
+ */
+
 
 #ifndef THREAD
 #define THREAD

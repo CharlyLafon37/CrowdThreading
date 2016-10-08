@@ -1,6 +1,9 @@
 /*
 	main.h
-*/
+	Projet concurrence SI4
+	Auteurs : Lafon, Monzein
+ */
+
 
 #ifndef MAIN
 #define MAIN

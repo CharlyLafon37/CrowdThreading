@@ -1,6 +1,9 @@
 /*
 	utils.h
-*/
+	Projet concurrence SI4
+	Auteurs : Lafon, Monzein
+ */
+
 
 #ifndef UTILS
 #define UTILS
