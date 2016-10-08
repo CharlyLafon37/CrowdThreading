@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <unistd.h>
 #include "main.h"
 #include "positions.h"
 #include "utils.h"
