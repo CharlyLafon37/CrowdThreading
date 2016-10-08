@@ -217,6 +217,17 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 	return people;
 }
 
-
-
-
+/*
+	Retourne l'indice du thread correspondant à la position du données.
+ */
+int indice_thread(int x, int y){
+    
+    if(x<XTHREAD_FIRST)
+        return 0;
+    else if(x<XTHREAD_SECOND)
+        return 1;
+    else if(x<XTHREAD_THIRD)
+        return 2;
+    else 
+        return 3;
+}

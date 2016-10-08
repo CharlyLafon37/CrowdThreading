@@ -23,6 +23,15 @@ struct Point
     int y;
 };
 
+typedef struct CPU_time CPU_time;
+struct CPU_time
+{
+    double user_time;
+    double system_time;
+};
+
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure);
+CPU_time giveTimeSingleThread();
+CPU_time giveTimeMultiThread();
 
 #endif
