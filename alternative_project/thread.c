@@ -65,12 +65,15 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant)
             perror("pthread_create");
             return;
         }
-        /*if(pthread_join(threads[i],NULL)){
+    }
+	// Attente des threads
+	for(i=0;i<NB_THREAD;i++){
+		if(pthread_join(threads[i],NULL)){
          perror("pthread_join");
          return;
          }
-         printf("apres creation du thread %d\n",i);*/
-    }
+         printf("apres creation du thread %d\n",i);
+	}
 }
 
 void *thread_person(thread_person_data *arg){
@@ -166,13 +169,13 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant)
             return;
         }
     }
-    /*for(i=0;i<NB_THREAD;i++){
+    for(i=0;i<NB_THREAD;i++){
      if(pthread_join(threads[i],NULL)){
      perror("pthread_join");
      return;
      }
      printf("apres creation du thread %d\n",i);
-     }*/
+     }
 }
 
 void *thread_space(thread_space_data *arg){
