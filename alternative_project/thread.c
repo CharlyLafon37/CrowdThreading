@@ -109,6 +109,9 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant)
     
     pthread_t threads[NB_THREAD];
     thread_space_data datas[NB_THREAD];
+    int tab_people[NB_THREAD][nbPeople];
+    int tab_nbPeople[NB_THREAD];
+    //Initialisation des tableaux
     
     // On prépare les datas de chaque Thread
     for(i=0;i<NB_THREAD;i++){
@@ -116,8 +119,14 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant)
         datas[i].restant=restant;
         datas[i].nbPeople=nbPeople;
         datas[i].people=people;
-        datas[i].nbPeopleSpace=0;
-        datas[i].peopleSpace=malloc(sizeof(int)*nbPeople);
+        datas[i].nbPeopleSpace=tab_nbPeople;
+        datas[i].peopleSpace=tab_people;
+        datas[i].nbPeopleSpace[i]=tab_nbPeople[i];
+        datas[i].peopleSpace[i]=tab_people[i];
+        for(j=0;j<nbPeople;j++)
+            datas[i].peopleSpace[i][j]=tab_people[i][j];
+        tab_nbPeople[i]=0;
+        printf("data tab %d = tab %d ; data tab i %d = tab i %d i %d\n",datas[i].peopleSpace,tab_people,datas[i].peopleSpace[i],tab_people[i],i);
     }
     
     for(i = 0; i < nbPeople; i++)
@@ -144,8 +153,8 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant)
             }
         }
         int indice = indice_thread(randX,randY);
-        datas[indice].peopleSpace[datas[indice].nbPeopleSpace]=i;
-        datas[indice].nbPeopleSpace=(datas[indice].nbPeopleSpace)+1;
+        datas[indice].peopleSpace[indice][datas[indice].nbPeopleSpace[indice]]=i;
+        datas[indice].nbPeopleSpace[indice]=(datas[indice].nbPeopleSpace[indice])+1;
     }
     
     // Création des threads du terrain.
@@ -156,31 +165,52 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant)
             perror("pthread_create");
             return;
         }
-        /*if(pthread_join(threads[i],NULL)){
-         perror("pthread_join");
-         return;
-         }
-         printf("apres creation du thread %d\n",i);*/
     }
+    /*for(i=0;i<NB_THREAD;i++){
+     if(pthread_join(threads[i],NULL)){
+     perror("pthread_join");
+     return;
+     }
+     printf("apres creation du thread %d\n",i);
+     }*/
 }
 
 void *thread_space(thread_space_data *arg){
     
-    int i,peopleLeft=0;
+    int i;
+    int indice=arg->n;//printf("indice %d restant %d\n",indice,(*(arg->restant)));
     // Tant qu'il reste des personnes a traiter dans le thread
-    while(arg->nbPeopleSpace>peopleLeft){
+    while((*(arg->restant))>0){
         // Boucle de traitement des personnes
-        for(i=0;i<arg->nbPeopleSpace;i++){
-            int index=arg->peopleSpace[i];
-            if(arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH){
+        for(i=0;i<arg->nbPeopleSpace[indice];i++){
+            int index=arg->peopleSpace[indice][i];
+            if((arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH) && index!=-1){
                 Point newPosition = move_people(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH);
                 arg->people[index].x = newPosition.x;
                 arg->people[index].y = newPosition.y;
                 if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH){
                     arg->people[index].isArrived = 1;
                     (*(arg->restant))--;
-                    printf("Personnes non sorties : %d\n",*(arg->restant));
-                    peopleLeft++;
+                    printf("thread %d rest %d\n",indice,*(arg->restant));
+                }
+                int newIndex=indice_thread(newPosition.x, newPosition.y);
+                if(newIndex!=indice){//printf("lol\n");
+                    /*move_index_people(arg->nbPeopleSpace[indice], arg->nbPeopleSpace[newIndex],
+                     arg->peopleSpace[indice], arg->peopleSpace[newIndex], i);printf("lal\n");*/
+                    // Garder en mémoire l'index de la personne
+                    int temp=arg->peopleSpace[indice][i];
+                    printf("thread %d newIndex %d\n",indice,newIndex);
+                    
+                    // Ajouter l'index de la personne sur le nouveau tableau
+                    arg->peopleSpace[newIndex][arg->nbPeopleSpace[newIndex]]=temp;
+                    arg->nbPeopleSpace[newIndex]=arg->nbPeopleSpace[newIndex]+1;
+                    
+                    // Supprimer l'index du tableau 1
+                    int k=0;
+                    for(k=i;k<(arg->nbPeopleSpace[indice])-1;k++){
+                        arg->peopleSpace[indice][k]=arg->peopleSpace[indice][k+1];
+                    }
+                    arg->peopleSpace[indice][--arg->nbPeopleSpace[indice]]=-1;
                 }
             }
         }
