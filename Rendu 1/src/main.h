@@ -9,8 +9,8 @@
 #define MAIN
 
 #define DEFAULT_NBPEOPLE 16
-#define DEFAULT_THREAD 1
-#define DEFAULT_MESURE 1
+#define DEFAULT_THREAD 0
+#define DEFAULT_MESURE 0
 
 typedef struct Person Person;
 struct Person
