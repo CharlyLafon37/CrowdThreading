@@ -30,11 +30,12 @@ struct thread_space_data
     int nbPeopleSpace;
     int* peopleSpace;
 	thread_space_data* datas;
+    int option_mesure;
 };
 
-void spawnPeopleThread(Person people[], int nbPeople, int *restant);
+void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure);
 void *thread_person(thread_person_data *arg);
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant);
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure);
 void *thread_space(thread_space_data *arg);
 
 

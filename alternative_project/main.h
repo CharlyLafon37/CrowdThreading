@@ -9,8 +9,8 @@
 #define MAIN
 
 #define DEFAULT_NBPEOPLE 16
-#define DEFAULT_THREAD 0
-#define DEFAULT_MESURE 0
+#define DEFAULT_THREAD 1
+#define DEFAULT_MESURE 1
 
 typedef struct Person Person;
 struct Person
@@ -35,6 +35,5 @@ struct CPU_time
 
 void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure);
 CPU_time giveTimeSingleThread();
-CPU_time giveTimeMultiThread();
 
 #endif
