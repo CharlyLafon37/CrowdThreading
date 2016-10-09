@@ -97,6 +97,7 @@ int main(int argc, char** argv)
                     mesure4_sys = fin.system_time - debut.system_time;
                     mesure4_user = fin.user_time - debut.user_time; break;
                 }
+                default : break;
             }
         }
         restant = nbPeople;
@@ -106,7 +107,7 @@ int main(int argc, char** argv)
     
     if(option_mesure == 1)
     {
-        printf("Moyenne des 3 mesures intermediraires parmi les 5 mesures :\n");
+        printf("Moyenne des 3 mesures intermediaires parmi les 5 mesures :\n");
         printf("Temps CPU systeme consomme : %fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
         printf("Temps CPU utilisateur consomme : %fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
