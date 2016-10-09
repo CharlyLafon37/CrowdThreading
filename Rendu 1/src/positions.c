@@ -12,7 +12,7 @@
 
 void spawnPeople(Person people[], int nbPeople)
 {
-    int i, j;
+    int i, j, k;
     srand(time(NULL));
     
     // Initialisation du plateau pour verifier la position des personnes.
@@ -40,8 +40,6 @@ void spawnPeople(Person people[], int nbPeople)
         people[i].y = randY;
         
         people[i].isArrived = 0;
-        
-        int j, k;
         
         for(j=randX;j<randX+PEOPLE_WIDTH;j++)
         {
