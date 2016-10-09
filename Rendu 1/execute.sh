@@ -3,6 +3,6 @@
 # Groupe Lafon Monzein
 
 # Main
-./crow.out "$@"
+./bin/crowd.out "$@"
 
 

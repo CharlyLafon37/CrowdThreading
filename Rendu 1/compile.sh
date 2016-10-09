@@ -3,5 +3,5 @@
 # Groupe Lafon Monzein
 
 # Main
-gcc main.c positions.c utils.c thread.c -lm -lpthread -o crow.out
+gcc src/main.c src/positions.c src/utils.c src/thread.c -lm -lpthread -o bin/crowd.out
 
