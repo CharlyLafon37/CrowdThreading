@@ -67,7 +67,7 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         datas[i].n = i;
         datas[i].nbPeople = nbPeople;
         datas[i].people = people;
-	datas[i].plateau = &plateau;
+	datas[i].plateau = plateau;
         //datas[i].sem_plateau = sem_plateau;
         
         if(option_mesure == 0)
@@ -148,7 +148,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
 		datas[i].datas=datas;
 		datas[i].option_mesure = option_mesure;
 		//datas[i].sem_plateau = sem_plateau;
-		datas[i].plateau = &plateau;
+		datas[i].plateau = plateau;
 	}
     
     for(i = 0; i < nbPeople; i++)

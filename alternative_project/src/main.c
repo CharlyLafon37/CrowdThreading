@@ -21,6 +21,10 @@ int main(int argc, char** argv)
     int option_mesure = DEFAULT_MESURE;
     int option_version = DEFAULT_VERSION;
     
+    sem_t sem_plateau;
+    sem_t* ptr=&sem_plateau;
+    sem_init(ptr,1,1);
+
     CPU_time debut, fin;
     
     if(argc != 1)
@@ -120,7 +124,7 @@ int main(int argc, char** argv)
         printf("Temps CPU systeme consomme : %fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
         printf("Temps CPU utilisateur consomme : %fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
-    
+    sem_destroy(ptr);
     return 0;
 }
 
