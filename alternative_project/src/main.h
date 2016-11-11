@@ -4,6 +4,7 @@
 	Auteurs : Lafon, Monzein
  */
 #include "positions.h"
+#include <semaphore.h>
 
 #ifndef MAIN
 #define MAIN

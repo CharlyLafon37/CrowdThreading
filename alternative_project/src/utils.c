@@ -87,16 +87,6 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, int p
 		}
 	}
 
-	/*for(i=0;i<nbPeople;i++){
-		if(i!=indexPeople){
-            if(peoples[i].isArrived == 0){
-                if(moveTo.x<peoples[i].x+PEOPLE_WIDTH && moveTo.x+PEOPLE_WIDTH>peoples[i].x &&
-                   moveTo.y<peoples[i].y+PEOPLE_HEIGHT && moveTo.y+PEOPLE_HEIGHT>peoples[i].y)
-                {return 0;}
-            }
-		}
-	}*/
-
 	return 1;
 }
 
@@ -243,7 +233,9 @@ int indice_thread(int x, int y){
 /*
 	Déplace la personne et renvoie sa position.
 */
-Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]){
+Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]/*, sem_t* sem_plateau*/){
+	
+	//int sem_wait(sem_plateau);
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
 	Person p = peoples[indexPeople];
 	int i=0,j=0;
@@ -259,7 +251,7 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 			plateau[i][j]=0;
 		}
 	}
-	
+	//sem_post(sem_plateau);
 	return pt;
 }
 
