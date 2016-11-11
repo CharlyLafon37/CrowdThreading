@@ -3,6 +3,6 @@
 # Groupe Lafon Monzein
 
 # Main
-./bin/crowd.out -p4 -t1 -m
+./bin/crowd.out -p4 -t0 -m
 
 

@@ -16,7 +16,7 @@
 int main(int argc, char** argv)
 {
     /**** Arguments ****/
-    int nbPeople = DEFAULT_NBPEOPLE;
+    int option_people = DEFAULT_PEOPLE;
     int option_thread = DEFAULT_THREAD;
     int option_mesure = DEFAULT_MESURE;
     int option_version = DEFAULT_VERSION;
@@ -24,9 +24,16 @@ int main(int argc, char** argv)
     CPU_time debut, fin;
     
     if(argc != 1)
-        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread, &option_mesure, &option_version);
+        argumentsTreatment(argv, argc-1, &option_people, &option_thread, &option_mesure, &option_version);
+    
+    printf("Arguments d'execution : -t%d, -p%d, -e%d ", option_thread, option_people, option_version);
+    if(option_mesure)
+        printf("-m");
+    printf("\n");
     
     /**** Initialisation des entités ****/
+    int nbPeople = pow(2, option_people);
+    
     Person people[nbPeople];
 	int restant = nbPeople;
     
@@ -102,7 +109,8 @@ int main(int argc, char** argv)
         restant = nbPeople;
         nbIterations++;
         
-        printf("Iterations %d finie\n", nbIterations);
+        if(option_mesure)
+            printf("Iterations %d finie\n", nbIterations);
     }
     while(option_mesure == 1 && nbIterations < 5);
     
@@ -116,7 +124,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure, int* option_version)
+void argumentsTreatment(char** argv, int nbArguments, int* option_people, int* option_thread, int* option_mesure, int* option_version)
 {
     int i;
     for(i = 1; i <= nbArguments; i++) // Commence à 1 car premier argument = nom executable
@@ -127,7 +135,7 @@ void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option
             {
                 char temp[2];
                 temp[0] = argv[i][2];
-                *nbPeople = pow(2, atoi(temp));
+                *option_people = atoi(temp);
             }
             else if(argv[i][1] == 't')
             {
