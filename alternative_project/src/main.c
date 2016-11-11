@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     
     sem_t sem_plateau;
     sem_t* ptr=&sem_plateau;
-    sem_init(ptr,1,1);
+    sem_init(ptr,1,0);
 
     CPU_time debut, fin;
     
@@ -62,7 +62,7 @@ int main(int argc, char** argv)
             {
                 for(i = 0; i < nbPeople; i++)
                 {
-                    Point newPosition = move_people(i, people, nbPeople, XAZIMUTH, YAZIMUTH, plateau);
+                    Point newPosition = move_people(i, people, nbPeople, XAZIMUTH, YAZIMUTH, plateau, ptr);
                     
                     if(people[i].x == XAZIMUTH && people[i].y == YAZIMUTH && people[i].isArrived == 0)
                     {
@@ -76,11 +76,11 @@ int main(int argc, char** argv)
         }
         else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
         {
-            spawnPeopleThreadSpace(people, nbPeople, &restant, option_mesure, plateau); // Création des personnes et de leur thread.
+            spawnPeopleThreadSpace(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
         }
         else if(option_thread == 2) // Si on simule avec un thread par personne.
         {
-            spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau); // Création des personnes et de leur thread.
+            spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
         }
         
         fin = giveTimeSingleThread();

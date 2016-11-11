@@ -233,9 +233,9 @@ int indice_thread(int x, int y){
 /*
 	Déplace la personne et renvoie sa position.
 */
-Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]/*, sem_t* sem_plateau*/){
+Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT], sem_t* sem_plateau){
 	
-	//int sem_wait(sem_plateau);
+	int sem_wait(sem_plateau);
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
 	Person p = peoples[indexPeople];
 	int i=0,j=0;
@@ -251,7 +251,7 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 			plateau[i][j]=0;
 		}
 	}
-	//sem_post(sem_plateau);
+	sem_post(sem_plateau);
 	return pt;
 }
 

@@ -17,7 +17,7 @@
 
 /**** -t2 ****/
 
-void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT]/*, sem_t* sem_plateau*/)
+void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau)
 {
     int i,j,k;
     
@@ -68,7 +68,7 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         datas[i].nbPeople = nbPeople;
         datas[i].people = people;
 	datas[i].plateau = plateau;
-        //datas[i].sem_plateau = sem_plateau;
+        datas[i].sem_plateau = sem_plateau;
         
         if(option_mesure == 0)
             printf("Creation du thread %d\n",i);
@@ -100,7 +100,7 @@ void *thread_person(thread_person_data *arg)
 {
     while(arg->people[arg->n].x!=XAZIMUTH || arg->people[arg->n].y!=YAZIMUTH)
     {
-        Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau)/*, arg->sem_plateau*/);
+        Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), arg->sem_plateau);
     }
     arg->people[arg->n].isArrived = 1;
     pthread_exit(NULL);
@@ -116,7 +116,7 @@ void *thread_person(thread_person_data *arg)
 /**** -t1 ****/
 
 
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]/*, sem_t* sem_plateau*/)
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT], sem_t* sem_plateau)
 {
     int i,j,k;
     srand(time(NULL));
@@ -147,7 +147,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
 		datas[i].peopleSpace=malloc(sizeof(int) * nbPeople);
 		datas[i].datas=datas;
 		datas[i].option_mesure = option_mesure;
-		//datas[i].sem_plateau = sem_plateau;
+		datas[i].sem_plateau = sem_plateau;
 		datas[i].plateau = plateau;
 	}
     
@@ -217,7 +217,7 @@ void *thread_space(thread_space_data *arg)
 			int index=arg->peopleSpace[i];
 			if(arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH)
             {
-				Point newPosition = move_people(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau)/*, arg->sem_plateau*/);
+				Point newPosition = move_people(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), arg->sem_plateau);
 				if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH)
                 {
 					arg->people[index].isArrived = 1;
