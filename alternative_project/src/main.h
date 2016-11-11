@@ -11,6 +11,8 @@
 #define DEFAULT_NBPEOPLE 16
 #define DEFAULT_THREAD 0
 #define DEFAULT_MESURE 0
+#define DEFAULT_VERSION 2
+
 
 typedef struct Person Person;
 struct Person
@@ -33,7 +35,7 @@ struct CPU_time
     double system_time;
 };
 
-void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure);
+void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure, int* option_version);
 CPU_time giveTimeSingleThread();
 
 #endif

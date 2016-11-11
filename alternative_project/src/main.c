@@ -19,11 +19,12 @@ int main(int argc, char** argv)
     int nbPeople = DEFAULT_NBPEOPLE;
     int option_thread = DEFAULT_THREAD;
     int option_mesure = DEFAULT_MESURE;
+    int option_version = DEFAULT_VERSION;
     
     CPU_time debut, fin;
     
     if(argc != 1)
-        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread, &option_mesure);
+        argumentsTreatment(argv, argc-1, &nbPeople, &option_thread, &option_mesure, &option_version);
     
     /**** Initialisation des entités ****/
     Person people[nbPeople];
@@ -100,6 +101,8 @@ int main(int argc, char** argv)
         }
         restant = nbPeople;
         nbIterations++;
+        
+        printf("Iterations %d finie\n", nbIterations);
     }
     while(option_mesure == 1 && nbIterations < 5);
     
@@ -113,7 +116,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure)
+void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option_thread, int* option_mesure, int* option_version)
 {
     int i;
     for(i = 1; i <= nbArguments; i++) // Commence à 1 car premier argument = nom executable
@@ -135,6 +138,12 @@ void argumentsTreatment(char** argv, int nbArguments, int* nbPeople, int* option
             else if(argv[i][1] == 'm')
             {
                 *option_mesure = 1;
+            }
+            else if(argv[i][1] == 'e')
+            {
+                if(argv[i][2] == '1') *option_version=1;
+                else if(argv[i][2] == '2') *option_version=2;
+                else if(argv[i][2] == '3') *option_version=3;
             }
         }
     }
