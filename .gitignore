@@ -7,4 +7,9 @@
 *.obj
 *.elf
 
+# Executables
+*.exe
+*.out
+*.app
+
 .DS_Store
