@@ -48,10 +48,10 @@ int main(int argc, char** argv)
 
     do
     {
+        debut = giveTimeSingleThread();
+        
         if(option_thread == 0) // Si on simule sur 1 seul thread.
         {
-            debut = giveTimeSingleThread();
-            
             spawnPeople(people, nbPeople, plateau);
             
             if(option_mesure == 0)
@@ -73,23 +73,17 @@ int main(int argc, char** argv)
                     }
                 }
             }
-            
-            fin = giveTimeSingleThread();
         }
         else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
         {
-            debut = giveTimeSingleThread();
             spawnPeopleThreadSpace(people, nbPeople, &restant, option_mesure, plateau); // Création des personnes et de leur thread.
-            
-            fin = giveTimeSingleThread();
         }
         else if(option_thread == 2) // Si on simule avec un thread par personne.
         {
-            debut = giveTimeSingleThread();
             spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau); // Création des personnes et de leur thread.
-            
-            fin = giveTimeSingleThread();
         }
+        
+        fin = giveTimeSingleThread();
         
         if(option_mesure == 1)
         {
@@ -135,28 +129,17 @@ void argumentsTreatment(char** argv, int nbArguments, int* option_people, int* o
     {
         if(argv[i][0] == '-')
         {
+            char temp[2];
+            temp[0] = argv[i][2];
+            
             if(argv[i][1] == 'p')
-            {
-                char temp[2];
-                temp[0] = argv[i][2];
                 *option_people = atoi(temp);
-            }
             else if(argv[i][1] == 't')
-            {
-                if(argv[i][2] == '0') *option_thread=0;
-                else if(argv[i][2] == '1') *option_thread=1;
-                else if(argv[i][2] == '2') *option_thread=2;
-            }
+                *option_thread = atoi(temp);
             else if(argv[i][1] == 'm')
-            {
                 *option_mesure = 1;
-            }
             else if(argv[i][1] == 'e')
-            {
-                if(argv[i][2] == '1') *option_version=1;
-                else if(argv[i][2] == '2') *option_version=2;
-                else if(argv[i][2] == '3') *option_version=3;
-            }
+                *option_version = atoi(temp);
         }
     }
 }
