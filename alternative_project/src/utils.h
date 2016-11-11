@@ -28,7 +28,8 @@
 #define XTHREAD_FOURTH 3*WINDOW_WIDTH/4
 
 int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY);
-Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT]);
+Point point_move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]);
+Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]);
 int indice_thread(int x, int y);
 void move_index_people(int* nb_people_1, int* nb_people_2, int tab1[], int tab2[], int index);
 

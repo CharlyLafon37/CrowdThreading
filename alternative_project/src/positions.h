@@ -38,6 +38,6 @@
 #define XAZIMUTH 0
 #define YAZIMUTH 60
 
-void spawnPeople(Person people[], int nbPeople, int plateau[][WINDOW_HEIGHT]);
+void spawnPeople(Person people[], int nbPeople, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]);
 
 #endif

@@ -10,7 +10,7 @@
 #include <time.h>
 #include "positions.h"
 
-void spawnPeople(Person people[], int nbPeople, int plateau[][WINDOW_HEIGHT])
+void spawnPeople(Person people[], int nbPeople, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT])
 {
     int i, j, k;
     srand(time(NULL));

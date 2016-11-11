@@ -67,7 +67,7 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         datas[i].n = i;
         datas[i].nbPeople = nbPeople;
         datas[i].people = people;
-	datas[i].plateau = plateau;
+	    datas[i].plateau = &plateau;
         
         if(option_mesure == 0)
             printf("Creation du thread %d\n",i);
@@ -99,10 +99,7 @@ void *thread_person(thread_person_data *arg)
 {
     while(arg->people[arg->n].x!=XAZIMUTH || arg->people[arg->n].y!=YAZIMUTH)
     {
-        Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, arg->plateau);
-        
-        arg->people[arg->n].x = newPosition.x;
-        arg->people[arg->n].y = newPosition.y;
+        Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau));
     }
     arg->people[arg->n].isArrived = 1;
     pthread_exit(NULL);
@@ -118,7 +115,7 @@ void *thread_person(thread_person_data *arg)
 /**** -t1 ****/
 
 
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT])
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT])
 {
     int i,j,k;
     srand(time(NULL));
@@ -149,7 +146,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
 		datas[i].peopleSpace=malloc(sizeof(int) * nbPeople);
 		datas[i].datas=datas;
         datas[i].option_mesure = option_mesure;
-		datas[i].plateau = plateau;
+		datas[i].plateau = &plateau;
 	}
     
     for(i = 0; i < nbPeople; i++)
@@ -218,9 +215,7 @@ void *thread_space(thread_space_data *arg)
 			int index=arg->peopleSpace[i];
 			if(arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH)
             {
-				Point newPosition = move_people(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, arg->plateau);
-		    	arg->people[index].x = newPosition.x;
-		    	arg->people[index].y = newPosition.y;
+				Point newPosition = move_people(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau));
 				if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH)
                 {
 					arg->people[index].isArrived = 1;

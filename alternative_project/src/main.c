@@ -52,9 +52,6 @@ int main(int argc, char** argv)
                 {
                     Point newPosition = move_people(i, people, nbPeople, XAZIMUTH, YAZIMUTH, plateau);
                     
-                    people[i].x = newPosition.x;
-                    people[i].y = newPosition.y;
-                    
                     if(people[i].x == XAZIMUTH && people[i].y == YAZIMUTH && people[i].isArrived == 0)
                     {
                         people[i].isArrived = 1;
