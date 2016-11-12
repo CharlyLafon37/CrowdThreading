@@ -20,7 +20,9 @@ void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT])
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
             plateau[i][j].occupe = 0;
-	    plateau[i][j].verrou = NULL;
+	    sem_t sem;
+	    sem_init(&sem, 1, 1);
+	    plateau[i][j].verrou = &sem;
         }
     }
     
@@ -53,6 +55,21 @@ void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT])
         for(k = randY;k < randY + PEOPLE_HEIGHT; k++)
         {
             plateau[j][k].occupe = 1;
+        }
+    }
+}
+
+/*
+	Permet de détruire le sémaphore de chaque cellule du tableau.
+*/
+void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]){
+
+    int i=0,j=0;
+    for(i = 0; i < WINDOW_WIDTH; i++)
+    {
+        for(j = 0; j < WINDOW_HEIGHT; j++)
+        {
+	    sem_destroy(plateau[i][j].verrou);
         }
     }
 }

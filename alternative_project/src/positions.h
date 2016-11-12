@@ -40,5 +40,6 @@
 
 void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT]);
 void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT]);
+void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]);
 
 #endif

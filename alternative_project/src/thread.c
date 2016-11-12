@@ -31,7 +31,9 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         for(j=0;j<WINDOW_HEIGHT;j++)
         {
             plateau[i][j].occupe=0;
-            plateau[i][j].verrou = NULL;
+            sem_t sem;
+	        sem_init(&sem, 1, 1);
+	        plateau[i][j].verrou = &sem;
         }
     }
     
@@ -103,7 +105,9 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
         for(j=0;j<WINDOW_HEIGHT;j++)
         {
             plateau[i][j].occupe=0;
-            plateau[i][j].verrou = NULL;
+            sem_t sem;
+	        sem_init(&sem, 1, 1);
+	        plateau[i][j].verrou = &sem;
         }
     }
     
