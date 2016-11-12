@@ -38,7 +38,7 @@
 #define XAZIMUTH 0
 #define YAZIMUTH 60
 
-void init_plateau(Cell plateau[][WINDOW_HEIGHT]);
+void init_plateau(Cell plateau[][WINDOW_HEIGHT], int withSemaphore);
 void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT]);
 void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT]);
 void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]);

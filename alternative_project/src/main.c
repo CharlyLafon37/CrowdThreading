@@ -39,8 +39,8 @@ int main(int argc, char** argv)
     /**** Semaphores ****/
     sem_t sem_plateau;
     sem_t* ptr = &sem_plateau;
-    if(option_version == 2 && option_thread!=0)
-        sem_init(ptr, 1, 1);
+    if(option_version == 2 && option_thread != 0)
+        sem_init(ptr, 0, 1);
     else
         ptr = NULL; // On ne veut pas de sémaphores
     
@@ -50,11 +50,15 @@ int main(int argc, char** argv)
     int restant = nbPeople;
     
     int nbIterations = 0;
-	init_plateau(plateau);
 
     do
     {
         debut = giveTimeSingleThread();
+        
+        if(option_version == 2 && option_thread != 0)
+            init_plateau(plateau, 1);
+        else
+            init_plateau(plateau, 0);
         
         if(option_thread == 0) // Si on simule sur 1 seul thread.
         {
@@ -124,9 +128,11 @@ int main(int argc, char** argv)
         printf("Temps CPU systeme consomme : %fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
         printf("Temps CPU utilisateur consomme : %fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
-    if(option_version == 2)
+    if(option_version == 2 && option_thread != 0)
+    {
         sem_destroy(ptr);
-    destroy_tab_sem(plateau);
+        destroy_tab_sem(plateau);
+    }
     
     return 0;
 }

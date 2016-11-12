@@ -39,7 +39,7 @@ struct CPU_time
 typedef struct Cell Cell;
 struct Cell
 {
-    int occupe; // 0 si libre, 1 si occupe;
+    int occupe; // 0 si libre, 1 si occupé
     sem_t verrou;
 };
 

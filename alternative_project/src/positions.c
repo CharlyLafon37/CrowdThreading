@@ -13,16 +13,22 @@
 /*
 	Place les obstacles sur la tableau, passe à 0 toutes les cases vides et créé les sémaphores.
 */
-void init_plateau(Cell plateau[][WINDOW_HEIGHT]){
-	int i=0,j=0;
-	for(i = 0; i < WINDOW_WIDTH; i++)
+void init_plateau(Cell plateau[][WINDOW_HEIGHT], int withSemaphore){
+    int i, j;
+    
+    for(i = 0; i < WINDOW_WIDTH; i++)
     {
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
             plateau[i][j].occupe = 0;
-			sem_t sem;
-			sem_init(&sem, 1, 1);
-			plateau[i][j].verrou = sem;
+			if(withSemaphore == 1)
+            {
+                sem_t sem;
+                sem_init(&sem, 0, 1);
+                plateau[i][j].verrou = sem;
+            }
+            else
+                plateau[i][j].verrou = NULL;
         }
     }
 	// Obstacles
@@ -97,12 +103,12 @@ void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT])
 */
 void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]){
 
-    int i=0,j=0;
+    int i, j;
     for(i = 0; i < WINDOW_WIDTH; i++)
     {
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
-	    sem_destroy(&(plateau[i][j].verrou));
+            sem_destroy(&(plateau[i][j].verrou));
         }
     }
 }

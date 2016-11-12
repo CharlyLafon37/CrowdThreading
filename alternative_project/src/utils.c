@@ -222,10 +222,10 @@ int indice_thread(int x, int y){
 */
 Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau){
 	
-    int i=0,j=0;
+    int i ,j;
     
     Person p = peoples[indexPeople];
-    int oldx=p.x,oldy=p.y;
+    int oldx = p.x, oldy = p.y;
 
 	if(sem_plateau != NULL){
         // On bloque le plateau pendant qu'on bloque les cellules
@@ -245,13 +245,13 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
     }
     
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
-	//Si on ne se déplace pas
+	//Si on se déplace
     if(!(pt.x==oldx && pt.y==oldy)){
         // On récupère la nouvelle position
 	    peoples[indexPeople].x=pt.x;
 	    peoples[indexPeople].y=pt.y;
         
-        // On passe à 0 l'ancienne position pour trouver une nouvelle position
+        // On passe à 0 l'ancienne position
 	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
 		    for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
 			    plateau[i][j].occupe=0;
