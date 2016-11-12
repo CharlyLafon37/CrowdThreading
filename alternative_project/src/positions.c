@@ -10,21 +10,54 @@
 #include <time.h>
 #include "positions.h"
 
-void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT])
-{
-    int i, j;
-    srand(time(NULL));
-    
-    for(i = 0; i < WINDOW_WIDTH; i++)
+/*
+	Place les obstacles sur la tableau, passe à 0 toutes les cases vides et créé les sémaphores.
+*/
+void init_plateau(Cell plateau[][WINDOW_HEIGHT]){
+	int i=0,j=0;
+	for(i = 0; i < WINDOW_WIDTH; i++)
     {
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
             plateau[i][j].occupe = 0;
-	    //sem_t sem;
-	    //sem_init(&sem, 1, 1);
-	    //plateau[i][j].verrou = sem;
+			/*sem_t sem;
+			sem_init(&sem, 1, 1);
+			plateau[i][j].verrou = sem;*/
         }
     }
+	// Obstacles
+	// Obstacle gauche
+	for(i=XOBSTACLE_LEFT_TOP;i<XOBSTACLE_LEFT_TOP+OBSTACLE_WIDTH;i++){
+		plateau[i][YOBSTACLE_LEFT_TOP].occupe=1;
+		plateau[i][YOBSTACLE_LEFT_TOP+OBSTACLE_LEFT_HEIGHT-1].occupe=1;
+		plateau[i][YOBSTACLE_LEFT_BOTTOM].occupe=1;
+		plateau[i][YOBSTACLE_LEFT_BOTTOM+OBSTACLE_LEFT_HEIGHT-1].occupe=1;
+	}
+	for(i=0;i<OBSTACLE_LEFT_HEIGHT;i++){
+		plateau[XOBSTACLE_LEFT_TOP][YOBSTACLE_LEFT_TOP+i].occupe=1;
+		plateau[XOBSTACLE_LEFT_TOP+OBSTACLE_WIDTH][YOBSTACLE_LEFT_TOP+i].occupe=1;
+		plateau[XOBSTACLE_LEFT_BOTTOM][YOBSTACLE_LEFT_BOTTOM+i].occupe=1;
+		plateau[XOBSTACLE_LEFT_BOTTOM+OBSTACLE_WIDTH][YOBSTACLE_LEFT_BOTTOM+i].occupe=1;
+	}
+	// Obstacle droite
+	for(i=XOBSTACLE_RIGHT_TOP;i<XOBSTACLE_RIGHT_TOP+OBSTACLE_WIDTH;i++){
+		plateau[i][YOBSTACLE_RIGHT_TOP].occupe=1;
+		plateau[i][YOBSTACLE_RIGHT_TOP+OBSTACLE_RIGHT_HEIGHT-1].occupe=1;
+		plateau[i][YOBSTACLE_RIGHT_BOTTOM].occupe=1;
+		plateau[i][YOBSTACLE_RIGHT_BOTTOM+OBSTACLE_RIGHT_HEIGHT-1].occupe=1;
+	}
+	for(i=0;i<OBSTACLE_RIGHT_HEIGHT;i++){
+		plateau[XOBSTACLE_RIGHT_TOP][YOBSTACLE_RIGHT_TOP+i].occupe=1;
+		plateau[XOBSTACLE_RIGHT_TOP+OBSTACLE_WIDTH][YOBSTACLE_RIGHT_TOP+i].occupe=1;
+		plateau[XOBSTACLE_RIGHT_BOTTOM][YOBSTACLE_RIGHT_BOTTOM+i].occupe=1;
+		plateau[XOBSTACLE_RIGHT_BOTTOM+OBSTACLE_WIDTH][YOBSTACLE_RIGHT_BOTTOM+i].occupe=1;
+	}
+}
+
+void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT])
+{
+    int i, j;
+    srand(time(NULL));
     
     for(i = 0; i < nbPeople; i++)
     {

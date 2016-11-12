@@ -47,9 +47,10 @@ int main(int argc, char** argv)
     /**** Initialisation des entités ****/
     int nbPeople = pow(2, option_people);
     Person people[nbPeople];
-	int restant = nbPeople;
+    int restant = nbPeople;
     
     int nbIterations = 0;
+	init_plateau(plateau);
 
     do
     {

@@ -59,31 +59,18 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, Cell 
 		{return 0;}
 	if(moveTo.y<0 || moveTo.y+PEOPLE_HEIGHT>=WINDOW_HEIGHT)
 		{return 0;}
-	// Obstacles
-	// Obstacle haut gauche
-	if(moveTo.x<XOBSTACLE_LEFT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>XOBSTACLE_LEFT_TOP && 
-		moveTo.y<YOBSTACLE_LEFT_TOP+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>YOBSTACLE_LEFT_TOP)
-		{return 0;}
-	// Obstacle bas gauche
-	if(moveTo.x<XOBSTACLE_LEFT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>XOBSTACLE_LEFT_BOTTOM &&
-		moveTo.y<YOBSTACLE_LEFT_BOTTOM+OBSTACLE_LEFT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>YOBSTACLE_LEFT_BOTTOM)
-		{return 0;}
-	// Obstacle haut gauche
-	if(moveTo.x<XOBSTACLE_RIGHT_TOP+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>XOBSTACLE_RIGHT_TOP &&
-		moveTo.y<YOBSTACLE_RIGHT_TOP+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>YOBSTACLE_RIGHT_TOP)
-		{return 0;}
-	// Obstacle bas gauche
-	if(moveTo.x<XOBSTACLE_RIGHT_BOTTOM+OBSTACLE_WIDTH && moveTo.x+PEOPLE_WIDTH>XOBSTACLE_RIGHT_BOTTOM &&
-		moveTo.y<YOBSTACLE_RIGHT_BOTTOM+OBSTACLE_RIGHT_HEIGHT && moveTo.y+PEOPLE_HEIGHT>YOBSTACLE_RIGHT_BOTTOM)
-		{return 0;}
+
+    Person p = peoples[indexPeople];
 
 	// Personnes
 	int i=0,j=0;
 	for(i=moveTo.x;i<moveTo.x+PEOPLE_WIDTH-1;i++){
 		for(j=moveTo.y;j<moveTo.y+PEOPLE_HEIGHT-1;j++){
-			if(plateau[i][j].occupe!=0){
-				return 0;
-			}
+            if(!(i>=p.x && i<=p.x+PEOPLE_WIDTH-1 && j>=p.y && j<=p.y+PEOPLE_HEIGHT-1)){
+			    if(plateau[i][j].occupe!=0){
+				    return 0;
+			    }
+            }
 		}
 	}
 
@@ -255,17 +242,19 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
         // On rend le tableau
         sem_post(sem_plateau);*/
     }
+    
+	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
+	
+    // On récupère la nouvelle position
+	peoples[indexPeople].x=pt.x;
+	peoples[indexPeople].y=pt.y;
+    
     // On passe à 0 l'ancienne position pour trouver une nouvelle position
 	for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
 		for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
 			plateau[i][j].occupe=0;
 		}
 	}
-	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
-	
-    // On récupère la nouvelle position
-	peoples[indexPeople].x=pt.x;
-	peoples[indexPeople].y=pt.y;
     // On passe à 1 la nouvelle position si la personne n'est pas arrivé
     if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
 	    for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){

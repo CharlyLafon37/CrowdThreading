@@ -26,17 +26,6 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
     
     srand(time(NULL));
     
-    for(i=0;i<WINDOW_WIDTH;i++)
-    {
-        for(j=0;j<WINDOW_HEIGHT;j++)
-        {
-            plateau[i][j].occupe=0;
-            /*sem_t sem;
-	        sem_init(&sem, 1, 1);
-	        plateau[i][j].verrou = sem;*/
-        }
-    }
-    
     if(option_mesure == 0)
         printf("Personnes non sorties : %d\n",*restant);
     
@@ -99,17 +88,6 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
     
     if(option_mesure == 0)
         printf("Personnes non sorties : %d\n", *restant);
-    
-    for(i=0;i<WINDOW_WIDTH;i++)
-    {
-        for(j=0;j<WINDOW_HEIGHT;j++)
-        {
-            plateau[i][j].occupe=0;
-            /*sem_t sem;
-	        sem_init(&sem, 1, 1);
-	        plateau[i][j].verrou = sem;*/
-        }
-    }
     
     pthread_t threads[NB_THREAD];
     thread_space_data datas[NB_THREAD];
