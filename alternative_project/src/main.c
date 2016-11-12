@@ -15,11 +15,6 @@
 
 int main(int argc, char** argv)
 {
-    /**** Semaphores ****/
-    sem_t sem_plateau;
-    sem_t* ptr = &sem_plateau;
-    sem_init(ptr, 1, 0);
-    
     /**** Temps ****/
     CPU_time debut, fin;
     double mesure2_sys = 0, mesure2_user = 0, mesure3_sys = 0, mesure3_user = 0, mesure4_sys = 0, mesure4_user = 0;
@@ -40,6 +35,14 @@ int main(int argc, char** argv)
     if(option_mesure)
         printf(", -m");
     printf("\n");
+    
+    /**** Semaphores ****/
+    sem_t sem_plateau;
+    sem_t* ptr = &sem_plateau;
+    if(option_version == 2)
+        sem_init(ptr, 1, 0);
+    else
+        ptr = NULL; // On ne veut pas de sémaphores
     
     /**** Initialisation des entités ****/
     int nbPeople = pow(2, option_people);
@@ -120,7 +123,9 @@ int main(int argc, char** argv)
         printf("Temps CPU systeme consomme : %fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
         printf("Temps CPU utilisateur consomme : %fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
-    sem_destroy(ptr);
+    if(option_version == 2)
+        sem_destroy(ptr);
+    
     return 0;
 }
 
