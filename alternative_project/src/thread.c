@@ -65,6 +65,7 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
             printf("Personnes non sorties : %d\n",*restant);
             printf("Thread %d terminé\n", i);
         }
+        sem_destroy(&(sem[i]));
     }
 }
 
@@ -164,6 +165,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
         sem_wait(&(sem[i]));
         if(option_mesure == 0)
             printf("Thread %d terminé\n", i);
+        sem_destroy(&(sem[i]));
     }
 }
 
