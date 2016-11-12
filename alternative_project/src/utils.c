@@ -244,7 +244,7 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
         // On bloque le plateau pendant qu'on bloque les cellules
         sem_wait(sem_plateau);//printf("verrou plateau %d\n",indexPeople);
         // On bloque les cellules de la personnes et ses adjacentes
-        for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
+        /*for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
 		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
                 if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
 			        //printf("verouille %d i %d j %d\n",indexPeople,i,j);
@@ -253,7 +253,7 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 		    }
 	    }
         // On rend le tableau
-        sem_post(sem_plateau);
+        sem_post(sem_plateau);*/
     }
     // On passe à 0 l'ancienne position pour trouver une nouvelle position
 	for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
@@ -278,14 +278,14 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
     if(sem_plateau != NULL){
         // On rend les cellules de la personnes et ses adjacentes
         // Pas besoin de bloquer le plateau car on ne réserve pas
-        for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
+        /*for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
 		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
                 if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
 			        //printf("deverouille %d i %d j %d\n",indexPeople,i,j);
                     sem_post(&(plateau[i][j].verrou));
                 }
 		    }
-	    }//sem_post(sem_plateau);
+	    }*/sem_post(sem_plateau);
     }
     
 	return pt;
