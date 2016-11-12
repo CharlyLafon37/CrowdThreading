@@ -89,7 +89,7 @@ void *thread_person(thread_person_data *arg)
 /**** -t1 ****/
 
 
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT], sem_t* sem_plateau)
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau)
 {
     int i,j,k;
     srand(time(NULL));

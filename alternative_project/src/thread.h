@@ -37,9 +37,9 @@ struct thread_space_data
     int (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
 };
 
-void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT], sem_t* sem_plateau);
+void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
 void *thread_person(thread_person_data *arg);
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT], sem_t* sem_plateau);
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
 void *thread_space(thread_space_data *arg);
 
 

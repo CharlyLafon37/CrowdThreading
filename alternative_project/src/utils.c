@@ -52,7 +52,7 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 	Retourne 1 si la personne peut se deplacer au point indique.
 	Sinon, renvoie 0;
 */
-int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]){
+int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, int plateau[][WINDOW_HEIGHT]){
 
 	// Bordure de la fenêtre
 	if(moveTo.x<0 || moveTo.x+PEOPLE_WIDTH>=WINDOW_WIDTH)
@@ -93,7 +93,7 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, int p
 /*
 	Renvoie un point pour le deplacement de la personne en paramètre.
 */
-Point point_move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]){
+Point point_move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT]){
 
 	Point people = {peoples[indexPeople].x,peoples[indexPeople].y};
 	Point move_to = {people.x,people.y};
@@ -233,7 +233,7 @@ int indice_thread(int x, int y){
 /*
 	Déplace la personne et renvoie sa position.
 */
-Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT], sem_t* sem_plateau){
+Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau){
 	
 	sem_wait(sem_plateau);
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
