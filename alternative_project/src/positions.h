@@ -38,7 +38,7 @@
 #define XAZIMUTH 0
 #define YAZIMUTH 60
 
-void spawnPeople(Person people[], int nbPeople, int plateau[][WINDOW_HEIGHT]);
-void randomizeAndPut(Person people[], int i, int plateau[][WINDOW_HEIGHT]);
+void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT]);
+void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT]);
 
 #endif

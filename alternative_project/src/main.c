@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     double mesure2_sys = 0, mesure2_user = 0, mesure3_sys = 0, mesure3_user = 0, mesure4_sys = 0, mesure4_user = 0;
     
     /****/
-    int plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
+    Cell plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
     
     /**** Arguments ****/
     int option_people = DEFAULT_PEOPLE;
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     sem_t sem_plateau;
     sem_t* ptr = &sem_plateau;
     if(option_version == 2)
-        sem_init(ptr, 1, 0);
+        sem_init(ptr, 1, 1);
     else
         ptr = NULL; // On ne veut pas de sémaphores
     

@@ -36,6 +36,13 @@ struct CPU_time
     double system_time;
 };
 
+typedef struct Cell Cell;
+struct Cell
+{
+    int occupe; // 0 si libre, 1 si occupe;
+    sem_t* verrou;
+};
+
 void argumentsTreatment(char** argv, int nbArguments, int* option_people, int* option_thread, int* option_mesure, int* option_version);
 CPU_time giveTimeSingleThread();
 

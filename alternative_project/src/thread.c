@@ -17,7 +17,7 @@
 
 /**** -t2 ****/
 
-void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau)
+void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau)
 {
     int i, j;
     
@@ -30,7 +30,8 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
     {
         for(j=0;j<WINDOW_HEIGHT;j++)
         {
-            plateau[i][j]=0;
+            plateau[i][j].occupe=0;
+            plateau[i][j].verrou = NULL;
         }
     }
     
@@ -89,7 +90,7 @@ void *thread_person(thread_person_data *arg)
 /**** -t1 ****/
 
 
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau)
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau)
 {
     int i,j,k;
     srand(time(NULL));
@@ -101,7 +102,8 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
     {
         for(j=0;j<WINDOW_HEIGHT;j++)
         {
-            plateau[i][j]=0;
+            plateau[i][j].occupe=0;
+            plateau[i][j].verrou = NULL;
         }
     }
     
@@ -127,8 +129,8 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
         int randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
         int randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
         
-        while(plateau[randX][randY]==1 || plateau[randX+PEOPLE_WIDTH-1][randY+PEOPLE_HEIGHT-1]==1
-              ||plateau[randX][randY+PEOPLE_HEIGHT-1]==1 || plateau[randX+PEOPLE_WIDTH-1][randY]==1)
+        while(plateau[randX][randY].occupe==1 || plateau[randX+PEOPLE_WIDTH-1][randY+PEOPLE_HEIGHT-1].occupe==1
+              ||plateau[randX][randY+PEOPLE_HEIGHT-1].occupe==1 || plateau[randX+PEOPLE_WIDTH-1][randY].occupe==1)
         {
             randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
             randY=rand()%(YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
@@ -142,7 +144,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
         {
             for(k=randY;k<randY+PEOPLE_HEIGHT;k++)
             {
-                plateau[j][k]=1;
+                plateau[j][k].occupe=1;
             }
         }
         

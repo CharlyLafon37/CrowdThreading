@@ -10,7 +10,7 @@
 #include <time.h>
 #include "positions.h"
 
-void spawnPeople(Person people[], int nbPeople, int plateau[][WINDOW_HEIGHT])
+void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT])
 {
     int i, j;
     srand(time(NULL));
@@ -19,7 +19,8 @@ void spawnPeople(Person people[], int nbPeople, int plateau[][WINDOW_HEIGHT])
     {
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
-            plateau[i][j] = 0;
+            plateau[i][j].occupe = 0;
+	    plateau[i][j].verrou = NULL;
         }
     }
     
@@ -29,15 +30,15 @@ void spawnPeople(Person people[], int nbPeople, int plateau[][WINDOW_HEIGHT])
     }
 }
 
-void randomizeAndPut(Person people[], int i, int plateau[][WINDOW_HEIGHT])
+void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT])
 {
     int j, k;
     
     int randX = rand() % (XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
     int randY = rand() % (YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
     
-    while(plateau[randX][randY] == 1 || plateau[randX+PEOPLE_WIDTH-1][randY+PEOPLE_HEIGHT-1] == 1
-          || plateau[randX][randY+PEOPLE_HEIGHT-1] == 1 || plateau[randX+PEOPLE_WIDTH-1][randY] == 1)
+    while(plateau[randX][randY].occupe == 1 || plateau[randX+PEOPLE_WIDTH-1][randY+PEOPLE_HEIGHT-1].occupe == 1
+          || plateau[randX][randY+PEOPLE_HEIGHT-1].occupe == 1 || plateau[randX+PEOPLE_WIDTH-1][randY].occupe == 1)
     {
         randX = rand() % (XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
         randY = rand() % (YMAX_PEOPLE-YMIN_PEOPLE) + YMIN_PEOPLE;
@@ -51,7 +52,7 @@ void randomizeAndPut(Person people[], int i, int plateau[][WINDOW_HEIGHT])
     {
         for(k = randY;k < randY + PEOPLE_HEIGHT; k++)
         {
-            plateau[j][k] = 1;
+            plateau[j][k].occupe = 1;
         }
     }
 }
