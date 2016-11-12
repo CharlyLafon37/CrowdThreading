@@ -227,56 +227,68 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
     Person p = peoples[indexPeople];
     int oldx=p.x,oldy=p.y;
 
-	if(sem_plateau != NULL){//printf("attente plateau %d\n",indexPeople);
+	if(sem_plateau != NULL){
         // On bloque le plateau pendant qu'on bloque les cellules
-        sem_wait(sem_plateau);//printf("verrou plateau %d\n",indexPeople);
-        // On bloque les cellules de la personnes et ses adjacentes
+        sem_wait(sem_plateau);
+        // On bloque les cellules adjacentes        
         /*for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
-		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
-                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
-			        //printf("verouille %d i %d j %d\n",indexPeople,i,j);
-                    sem_wait(&(plateau[i][j].verrou));
-                }
-		    }
-	    }
+            sem_wait(&(plateau[i][oldy-1].verrou));
+            sem_wait(&(plateau[i][oldy+PEOPLE_HEIGHT].verrou));
+        }
+        for(i=oldy;i<oldy+PEOPLE_HEIGHT;i++){
+            sem_wait(&(plateau[oldx-1][i].verrou));
+            sem_wait(&(plateau[oldx+PEOPLE_WIDTH][i].verrou));
+        }
+
         // On rend le tableau
         sem_post(sem_plateau);*/
     }
     
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
-	
-    // On récupère la nouvelle position
-	peoples[indexPeople].x=pt.x;
-	peoples[indexPeople].y=pt.y;
-    
-    // On passe à 0 l'ancienne position pour trouver une nouvelle position
-	for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
-		for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
-			plateau[i][j].occupe=0;
-		}
-	}
-    // On passe à 1 la nouvelle position si la personne n'est pas arrivé
-    if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
-	    for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
-		    for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
-			    plateau[i][j].occupe=1;
+	//Si on ne se déplace pas
+    if(!(pt.x==oldx && pt.y==oldy)){
+        // On récupère la nouvelle position
+	    peoples[indexPeople].x=pt.x;
+	    peoples[indexPeople].y=pt.y;
+        
+        // On passe à 0 l'ancienne position pour trouver une nouvelle position
+	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
+		    for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
+			    plateau[i][j].occupe=0;
 		    }
 	    }
+        // On passe à 1 la nouvelle position si la personne n'est pas arrivé
+        if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
+	        for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
+		        for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
+			        plateau[i][j].occupe=1;
+		        }
+	        }
+        }
+        
+        /*if(sem_plateau != NULL){
+            // On rend les cellules de la personnes et ses adjacentes
+            // Pas besoin de bloquer le plateau car on ne réserve pas
+            for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
+		        for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
+                    if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
+                        sem_post(&(plateau[i][j].verrou));
+                    }
+		        }
+	        }
+        }*/
     }
-    
     if(sem_plateau != NULL){
-        // On rend les cellules de la personnes et ses adjacentes
-        // Pas besoin de bloquer le plateau car on ne réserve pas
         /*for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
-		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
-                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
-			        //printf("deverouille %d i %d j %d\n",indexPeople,i,j);
-                    sem_post(&(plateau[i][j].verrou));
-                }
-		    }
-	    }*/sem_post(sem_plateau);
+            sem_post(&(plateau[i][oldy-1].verrou));
+            sem_post(&(plateau[i][oldy+PEOPLE_HEIGHT].verrou));
+        }
+        for(i=oldy;i<oldy+PEOPLE_HEIGHT;i++){
+            sem_post(&(plateau[oldx-1][i].verrou));
+            sem_post(&(plateau[oldx+PEOPLE_WIDTH][i].verrou));
+        }*/
+        sem_post(sem_plateau);
     }
-    
 	return pt;
 }
 

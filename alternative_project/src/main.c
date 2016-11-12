@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     }
     if(option_version == 2)
         sem_destroy(ptr);
-    //destroy_tab_sem(plateau);
+    destroy_tab_sem(plateau);
     
     return 0;
 }

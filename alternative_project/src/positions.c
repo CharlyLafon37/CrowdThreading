@@ -20,9 +20,9 @@ void init_plateau(Cell plateau[][WINDOW_HEIGHT]){
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
             plateau[i][j].occupe = 0;
-			/*sem_t sem;
+			sem_t sem;
 			sem_init(&sem, 1, 1);
-			plateau[i][j].verrou = sem;*/
+			plateau[i][j].verrou = sem;
         }
     }
 	// Obstacles
@@ -95,7 +95,7 @@ void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT])
 /*
 	Permet de détruire le sémaphore de chaque cellule du tableau.
 */
-/*void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]){
+void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]){
 
     int i=0,j=0;
     for(i = 0; i < WINDOW_WIDTH; i++)
@@ -105,4 +105,4 @@ void randomizeAndPut(Person people[], int i, Cell plateau[][WINDOW_HEIGHT])
 	    sem_destroy(&(plateau[i][j].verrou));
         }
     }
-}*/
+}
