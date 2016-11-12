@@ -240,14 +240,16 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
     Person p = peoples[indexPeople];
     int oldx=p.x,oldy=p.y;
 
-	if(sem_plateau != NULL){
+	if(sem_plateau != NULL){//printf("attente plateau %d\n",indexPeople);
         // On bloque le plateau pendant qu'on bloque les cellules
-        sem_wait(sem_plateau);
+        sem_wait(sem_plateau);//printf("verrou plateau %d\n",indexPeople);
         // On bloque les cellules de la personnes et ses adjacentes
-        for(i=p.x-1;i<=p.x+PEOPLE_WIDTH;i++){
-		    for(j=p.y-1;j<=p.y+PEOPLE_HEIGHT;j++){
-                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT);
-			        sem_wait(plateau[i][j].verrou);
+        for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
+		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
+                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
+			        //printf("verouille %d i %d j %d\n",indexPeople,i,j);
+                    sem_wait(&(plateau[i][j].verrou));
+                }
 		    }
 	    }
         // On rend le tableau
@@ -262,30 +264,28 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
 	
     // On récupère la nouvelle position
-    //printf("avant : %d, x : %d, y : %d\n",indexPeople,peoples[indexPeople].x,peoples[indexPeople].y);
-    //printf("nouvelle : %d, x : %d, y : %d\n",indexPeople,pt.x,pt.y);
 	peoples[indexPeople].x=pt.x;
 	peoples[indexPeople].y=pt.y;
-    //printf("apres : %d, x : %d, y : %d\n",indexPeople,peoples[indexPeople].x,peoples[indexPeople].y);
-    // On passe à 1 la nouvelle position
+    // On passe à 1 la nouvelle position si la personne n'est pas arrivé
     if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
-//printf("x %d y %d\n",pt.x,pt.y);
 	    for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
 		    for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
-			    plateau[i][j].occupe=1;//printf("indice %d i %d j %d\n",indexPeople,i,j);
+			    plateau[i][j].occupe=1;
 		    }
 	    }
-    }//else{printf("index %d sortit\n",indexPeople);}
+    }
     
     if(sem_plateau != NULL){
         // On rend les cellules de la personnes et ses adjacentes
         // Pas besoin de bloquer le plateau car on ne réserve pas
         for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
 		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
-                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT);
-			        sem_post(plateau[i][j].verrou);
+                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
+			        //printf("deverouille %d i %d j %d\n",indexPeople,i,j);
+                    sem_post(&(plateau[i][j].verrou));
+                }
 		    }
-	    }
+	    }//sem_post(sem_plateau);
     }
     
 	return pt;

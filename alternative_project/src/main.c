@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     /**** Semaphores ****/
     sem_t sem_plateau;
     sem_t* ptr = &sem_plateau;
-    if(option_version == 2)
+    if(option_version == 2 && option_thread!=0)
         sem_init(ptr, 1, 1);
     else
         ptr = NULL; // On ne veut pas de sémaphores

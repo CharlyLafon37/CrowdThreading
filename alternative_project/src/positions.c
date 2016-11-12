@@ -22,7 +22,7 @@ void spawnPeople(Person people[], int nbPeople, Cell plateau[][WINDOW_HEIGHT])
             plateau[i][j].occupe = 0;
 	    sem_t sem;
 	    sem_init(&sem, 1, 1);
-	    plateau[i][j].verrou = &sem;
+	    plateau[i][j].verrou = sem;
         }
     }
     
@@ -69,7 +69,7 @@ void destroy_tab_sem(Cell plateau[][WINDOW_HEIGHT]){
     {
         for(j = 0; j < WINDOW_HEIGHT; j++)
         {
-	    sem_destroy(plateau[i][j].verrou);
+	    sem_destroy(&(plateau[i][j].verrou));
         }
     }
 }
