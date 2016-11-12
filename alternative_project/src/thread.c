@@ -148,7 +148,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
         {
             for(k=randY;k<randY+PEOPLE_HEIGHT;k++)
             {
-                plateau[j][k].occupe=1;
+                plateau[j][k].occupe = 1;
             }
         }
         

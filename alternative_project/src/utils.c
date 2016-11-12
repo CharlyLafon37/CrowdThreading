@@ -235,27 +235,58 @@ int indice_thread(int x, int y){
 */
 Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau){
 	
-	if(sem_plateau != NULL)
-        sem_wait(sem_plateau);
+    int i=0,j=0;
     
-	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
-	Person p = peoples[indexPeople];
-	int i=0,j=0;
+    Person p = peoples[indexPeople];
+    int oldx=p.x,oldy=p.y;
+
+	if(sem_plateau != NULL){
+        // On bloque le plateau pendant qu'on bloque les cellules
+        sem_wait(sem_plateau);
+        // On bloque les cellules de la personnes et ses adjacentes
+        for(i=p.x-1;i<=p.x+PEOPLE_WIDTH;i++){
+		    for(j=p.y-1;j<=p.y+PEOPLE_HEIGHT;j++){
+                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT);
+			        sem_wait(plateau[i][j].verrou);
+		    }
+	    }
+        // On rend le tableau
+        sem_post(sem_plateau);
+    }
+    // On passe à 0 l'ancienne position pour trouver une nouvelle position
 	for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
 		for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
 			plateau[i][j].occupe=0;
 		}
 	}
+	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
+	
+    // On récupère la nouvelle position
+    //printf("avant : %d, x : %d, y : %d\n",indexPeople,peoples[indexPeople].x,peoples[indexPeople].y);
+    //printf("nouvelle : %d, x : %d, y : %d\n",indexPeople,pt.x,pt.y);
 	peoples[indexPeople].x=pt.x;
 	peoples[indexPeople].y=pt.y;
-	for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
-		for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
-			plateau[i][j].occupe=0;
-		}
-	}
+    //printf("apres : %d, x : %d, y : %d\n",indexPeople,peoples[indexPeople].x,peoples[indexPeople].y);
+    // On passe à 1 la nouvelle position
+    if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
+//printf("x %d y %d\n",pt.x,pt.y);
+	    for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
+		    for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
+			    plateau[i][j].occupe=1;//printf("indice %d i %d j %d\n",indexPeople,i,j);
+		    }
+	    }
+    }//else{printf("index %d sortit\n",indexPeople);}
     
-    if(sem_plateau != NULL)
-        sem_post(sem_plateau);
+    if(sem_plateau != NULL){
+        // On rend les cellules de la personnes et ses adjacentes
+        // Pas besoin de bloquer le plateau car on ne réserve pas
+        for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
+		    for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
+                if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT);
+			        sem_post(plateau[i][j].verrou);
+		    }
+	    }
+    }
     
 	return pt;
 }
