@@ -39,5 +39,6 @@
 #define YAZIMUTH 60
 
 void spawnPeople(Person people[], int nbPeople, int plateau[WINDOW_WIDTH][WINDOW_HEIGHT]);
+void randomizeAndPut(Person people[], int i, int plateau[][WINDOW_HEIGHT]);
 
 #endif

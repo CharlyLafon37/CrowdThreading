@@ -15,36 +15,38 @@
 
 int main(int argc, char** argv)
 {
+    /**** Semaphores ****/
+    sem_t sem_plateau;
+    sem_t* ptr = &sem_plateau;
+    sem_init(ptr, 1, 0);
+    
+    /**** Temps ****/
+    CPU_time debut, fin;
+    double mesure2_sys = 0, mesure2_user = 0, mesure3_sys = 0, mesure3_user = 0, mesure4_sys = 0, mesure4_user = 0;
+    
+    /****/
+    int plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
+    
     /**** Arguments ****/
     int option_people = DEFAULT_PEOPLE;
     int option_thread = DEFAULT_THREAD;
     int option_mesure = DEFAULT_MESURE;
     int option_version = DEFAULT_VERSION;
     
-    sem_t sem_plateau;
-    sem_t* ptr=&sem_plateau;
-    sem_init(ptr,1,0);
-
-    CPU_time debut, fin;
-    
     if(argc != 1)
         argumentsTreatment(argv, argc-1, &option_people, &option_thread, &option_mesure, &option_version);
     
-    printf("Arguments d'execution : -t%d, -p%d, -e%d ", option_thread, option_people, option_version);
+    printf("Arguments d'execution : -t%d, -p%d, -e%d", option_thread, option_people, option_version);
     if(option_mesure)
-        printf("-m");
+        printf(", -m");
     printf("\n");
     
     /**** Initialisation des entités ****/
     int nbPeople = pow(2, option_people);
-    
     Person people[nbPeople];
 	int restant = nbPeople;
     
     int nbIterations = 0;
-    double mesure2_sys = 0, mesure2_user = 0, mesure3_sys = 0, mesure3_user = 0, mesure4_sys = 0, mesure4_user = 0;
-    
-	int plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
 
     do
     {
