@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     double mesure2_sys = 0, mesure2_user = 0, mesure3_sys = 0, mesure3_user = 0, mesure4_sys = 0, mesure4_user = 0;
     
     /****/
-    Cell plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
+    int plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
     
     /**** Arguments ****/
     int option_people = DEFAULT_PEOPLE;
@@ -55,10 +55,7 @@ int main(int argc, char** argv)
     {
         debut = giveTimeSingleThread();
         
-        if(option_version == 2 && option_thread != 0)
-            init_plateau(plateau, 1);
-        else
-            init_plateau(plateau, 0);
+        init_plateau(plateau);
         
         if(option_thread == 0) // Si on simule sur 1 seul thread.
         {
@@ -118,7 +115,7 @@ int main(int argc, char** argv)
         nbIterations++;
         
         if(option_mesure)
-            printf("Iterations %d finie\n", nbIterations);
+            printf("Iteration %d finie\n", nbIterations);
     }
     while(option_mesure == 1 && nbIterations < 5);
     
@@ -128,11 +125,9 @@ int main(int argc, char** argv)
         printf("Temps CPU systeme consomme : %fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
         printf("Temps CPU utilisateur consomme : %fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
+    
     if(option_version == 2 && option_thread != 0)
-    {
         sem_destroy(ptr);
-        destroy_tab_sem(plateau);
-    }
     
     return 0;
 }

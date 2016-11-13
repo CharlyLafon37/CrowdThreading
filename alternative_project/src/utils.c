@@ -52,7 +52,7 @@ int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY){
 	Retourne 1 si la personne peut se deplacer au point indique.
 	Sinon, renvoie 0;
 */
-int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, Cell plateau[][WINDOW_HEIGHT]){
+int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, int plateau[][WINDOW_HEIGHT]){
 
 	// Bordure de la fenêtre
 	if(moveTo.x<0 || moveTo.x+PEOPLE_WIDTH>=WINDOW_WIDTH)
@@ -67,7 +67,7 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, Cell 
 	for(i=moveTo.x;i<moveTo.x+PEOPLE_WIDTH-1;i++){
 		for(j=moveTo.y;j<moveTo.y+PEOPLE_HEIGHT-1;j++){
             if(!(i>=p.x && i<=p.x+PEOPLE_WIDTH-1 && j>=p.y && j<=p.y+PEOPLE_HEIGHT-1)){
-			    if(plateau[i][j].occupe!=0){
+			    if(plateau[i][j] != 0){
 				    return 0;
 			    }
             }
@@ -80,7 +80,7 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, Cell 
 /*
 	Renvoie un point pour le deplacement de la personne en paramètre.
 */
-Point point_move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT]){
+Point point_move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT]){
 
 	Point people = {peoples[indexPeople].x,peoples[indexPeople].y};
 	Point move_to = {people.x,people.y};
@@ -220,33 +220,21 @@ int indice_thread(int x, int y){
 /*
 	Déplace la personne et renvoie sa position.
 */
-Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau){
+Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau){
 	
     int i ,j;
     
     Person p = peoples[indexPeople];
     int oldx = p.x, oldy = p.y;
 
-	if(sem_plateau != NULL){
-        // On bloque le plateau pendant qu'on bloque les cellules
+	if(sem_plateau != NULL)
         sem_wait(sem_plateau);
-        // On bloque les cellules adjacentes        
-        /*for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
-            sem_wait(&(plateau[i][oldy-1].verrou));
-            sem_wait(&(plateau[i][oldy+PEOPLE_HEIGHT].verrou));
-        }
-        for(i=oldy;i<oldy+PEOPLE_HEIGHT;i++){
-            sem_wait(&(plateau[oldx-1][i].verrou));
-            sem_wait(&(plateau[oldx+PEOPLE_WIDTH][i].verrou));
-        }
-
-        // On rend le tableau
-        sem_post(sem_plateau);*/
-    }
     
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
+    
 	//Si on se déplace
-    if(!(pt.x==oldx && pt.y==oldy)){
+    if(!(pt.x==oldx && pt.y==oldy))
+    {
         // On récupère la nouvelle position
 	    peoples[indexPeople].x=pt.x;
 	    peoples[indexPeople].y=pt.y;
@@ -254,48 +242,28 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
         // On passe à 0 l'ancienne position
 	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
 		    for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
-			    plateau[i][j].occupe=0;
+			    plateau[i][j] = 0;
 		    }
 	    }
         // On passe à 1 la nouvelle position si la personne n'est pas arrivé
         if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
 	        for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
 		        for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
-			        plateau[i][j].occupe=1;
+			        plateau[i][j] = 1;
 		        }
 	        }
         }
-        
-        /*if(sem_plateau != NULL){
-            // On rend les cellules de la personnes et ses adjacentes
-            // Pas besoin de bloquer le plateau car on ne réserve pas
-            for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
-		        for(j=oldy-1;j<=oldy+PEOPLE_HEIGHT;j++){
-                    if(i >= 0 && i < WINDOW_WIDTH && j>=0 && j < WINDOW_HEIGHT){
-                        sem_post(&(plateau[i][j].verrou));
-                    }
-		        }
-	        }
-        }*/
     }
-    if(sem_plateau != NULL){
-        /*for(i=oldx-1;i<=oldx+PEOPLE_WIDTH;i++){
-            sem_post(&(plateau[i][oldy-1].verrou));
-            sem_post(&(plateau[i][oldy+PEOPLE_HEIGHT].verrou));
-        }
-        for(i=oldy;i<oldy+PEOPLE_HEIGHT;i++){
-            sem_post(&(plateau[oldx-1][i].verrou));
-            sem_post(&(plateau[oldx+PEOPLE_WIDTH][i].verrou));
-        }*/
+    if(sem_plateau != NULL)
         sem_post(sem_plateau);
-    }
+    
 	return pt;
 }
 
 /*
 	Déplace la personne et renvoie sa position pour l'algo des 4 threads
 */
-Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_space1, sem_t* sem_space2, int indice){
+Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], sem_t* sem_space1, sem_t* sem_space2, int indice){
 	
     int i ,j;
     
@@ -304,8 +272,10 @@ Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azi
     int newIndice;
     
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
+    
 	//Si on se déplace
-    if(!(pt.x==oldx && pt.y==oldy)){
+    if(!(pt.x==oldx && pt.y==oldy))
+    {
         // On récupère la nouvelle position
 	    peoples[indexPeople].x=pt.x;
 	    peoples[indexPeople].y=pt.y;
@@ -318,14 +288,14 @@ Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azi
         // On passe à 0 l'ancienne position
 	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
 		    for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
-			    plateau[i][j].occupe=0;
+			    plateau[i][j] = 0;
 		    }
 	    }
         // On passe à 1 la nouvelle position si la personne n'est pas arrivé
         if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
 	        for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
 		        for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
-			        plateau[i][j].occupe=1;
+			        plateau[i][j] = 1;
 		        }
 	        }
         }

@@ -20,7 +20,7 @@ struct thread_person_data
     Person* people;
     sem_t* sem_plateau;
     sem_t* sem_join;
-    Cell (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
+    int (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
 };
 
 typedef struct thread_space_data thread_space_data;
@@ -37,12 +37,12 @@ struct thread_space_data
     sem_t sem_space;
     int use_sem;
     sem_t* sem_join;
-    Cell (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
+    int (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
 };
 
-void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
+void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
 void *thread_person(thread_person_data *arg);
-void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
+void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int option_mesure, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
 void *thread_space(thread_space_data *arg);
 
 
