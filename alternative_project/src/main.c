@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <sys/time.h>
-#include <sys/resource.h>
+#include <time.h>
 #include "main.h"
 #include "utils.h"
 #include "thread.h"
@@ -16,8 +16,10 @@
 int main(int argc, char** argv)
 {
     /**** Temps ****/
-    CPU_time debut, fin;
-    double mesure2_sys = 0, mesure2_user = 0, mesure3_sys = 0, mesure3_user = 0, mesure4_sys = 0, mesure4_user = 0;
+    clock_t tempsDebut, tempsFin;
+    struct timeval t0, t1;
+    double mesure2_sys = 0, mesure3_sys = 0, mesure4_sys = 0;
+    double mesure2_user = 0, mesure3_user = 0, mesure4_user = 0;
     
     /****/
     int plateau[WINDOW_WIDTH][WINDOW_HEIGHT];
@@ -39,10 +41,6 @@ int main(int argc, char** argv)
     /**** Semaphores ****/
     sem_t sem_plateau;
     sem_t* ptr = &sem_plateau;
-    if(option_version == 2 && option_thread != 0)
-        sem_init(ptr, 0, 1);
-    else
-        ptr = NULL; // On ne veut pas de sémaphores
     
     /**** Initialisation des entités ****/
     int nbPeople = pow(2, option_people);
@@ -53,7 +51,13 @@ int main(int argc, char** argv)
 
     do
     {
-        debut = giveTimeSingleThread();
+        tempsDebut = clock();
+        gettimeofday(&t0, NULL);
+        
+        if(option_version == 2 && option_thread != 0)
+            sem_init(ptr, 0, 1);
+        else
+            ptr = NULL; // On ne veut pas de sémaphores
         
         init_plateau(plateau);
         
@@ -90,23 +94,27 @@ int main(int argc, char** argv)
             spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
         }
         
-        fin = giveTimeSingleThread();
+        tempsFin = clock();
+        gettimeofday(&t1, NULL);
         
         if(option_mesure == 1)
         {
             switch(nbIterations+1)
             {
                 case 2 : {
-                    mesure2_sys = fin.system_time - debut.system_time;
-                    mesure2_user = fin.user_time - debut.user_time; break;
+                    mesure2_sys = (double)(tempsFin - tempsDebut) / CLOCKS_PER_SEC;
+                    mesure2_user = ((double)((t1.tv_sec - t0.tv_sec) * 1000000 + t1.tv_usec) - t0.tv_usec)/1000000;
+                    break;
                 }
                 case 3 : {
-                    mesure3_sys = fin.system_time - debut.system_time;
-                    mesure3_user = fin.user_time - debut.user_time; break;
+                    mesure3_sys = (double)(tempsFin - tempsDebut) / CLOCKS_PER_SEC;
+                    mesure3_user = ((double)((t1.tv_sec - t0.tv_sec) * 1000000 + t1.tv_usec) - t0.tv_usec)/1000000;
+                    break;
                 }
                 case 4 : {
-                    mesure4_sys = fin.system_time - debut.system_time;
-                    mesure4_user = fin.user_time - debut.user_time; break;
+                    mesure4_sys = (double)(tempsFin - tempsDebut) / CLOCKS_PER_SEC;
+                    mesure4_user = ((double)((t1.tv_sec - t0.tv_sec) * 1000000 + t1.tv_usec) - t0.tv_usec)/1000000;
+                    break;
                 }
                 default : break;
             }
@@ -122,8 +130,8 @@ int main(int argc, char** argv)
     if(option_mesure == 1)
     {
         printf("Moyenne des 3 mesures intermediaires parmi les 5 mesures :\n");
-        printf("Temps CPU systeme consomme : %fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
-        printf("Temps CPU utilisateur consomme : %fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
+        printf("Temps CPU systeme consomme : %.6fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
+        printf("Temps utilisateur consomme : %.6fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
     
     if(option_version == 2 && option_thread != 0)
@@ -152,21 +160,4 @@ void argumentsTreatment(char** argv, int nbArguments, int* option_people, int* o
                 *option_version = atoi(temp);
         }
     }
-}
-
-CPU_time giveTimeSingleThread()
-{
-    struct rusage rusage;
-    struct timeval systemTime, userTime;
-    struct CPU_time cpu_time;
-    
-    getrusage(RUSAGE_SELF, &rusage);
-    
-    systemTime = rusage.ru_stime;
-    userTime = rusage.ru_utime;
-    
-    cpu_time.system_time = (double)systemTime.tv_sec + (double)systemTime.tv_usec / 1000000.0;
-    cpu_time.user_time = (double)userTime.tv_sec + (double)userTime.tv_usec / 1000000.0;
-    
-    return cpu_time;
 }
