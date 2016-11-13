@@ -121,6 +121,9 @@ int main(int argc, char** argv)
         }
         restant = nbPeople;
         nbIterations++;
+
+	if(option_version == 2 && option_thread != 0)
+        	sem_destroy(ptr);
         
         if(option_mesure)
             printf("Iteration %d finie\n", nbIterations);
@@ -133,9 +136,6 @@ int main(int argc, char** argv)
         printf("Temps CPU systeme consomme : %.6fs\n", (mesure2_sys + mesure3_sys + mesure4_sys) / 3);
         printf("Temps utilisateur consomme : %.6fs\n", (mesure2_user + mesure3_user + mesure4_user) / 3);
     }
-    
-    if(option_version == 2 && option_thread != 0)
-        sem_destroy(ptr);
     
     return 0;
 }
