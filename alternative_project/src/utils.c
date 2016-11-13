@@ -293,6 +293,48 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 }
 
 /*
+	Déplace la personne et renvoie sa position pour l'algo des 4 threads
+*/
+Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_space1, sem_t* sem_space2, int indice){
+	
+    int i ,j;
+    
+    Person p = peoples[indexPeople];
+    int oldx = p.x, oldy = p.y;
+    int newIndice;
+    
+	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
+	//Si on se déplace
+    if(!(pt.x==oldx && pt.y==oldy)){
+        // On récupère la nouvelle position
+	    peoples[indexPeople].x=pt.x;
+	    peoples[indexPeople].y=pt.y;
+        
+        newIndice = indice_thread(pt.x, pt.y);
+        if(sem_space2 != NULL && indice!=newIndice && indice>0){
+               sem_wait(sem_space2);
+        }
+
+        // On passe à 0 l'ancienne position
+	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
+		    for(j=p.y;j<p.y+PEOPLE_HEIGHT;j++){
+			    plateau[i][j].occupe=0;
+		    }
+	    }
+        // On passe à 1 la nouvelle position si la personne n'est pas arrivé
+        if(pt.x!=XAZIMUTH || pt.y!=YAZIMUTH){
+	        for(i=pt.x;i<pt.x+PEOPLE_WIDTH;i++){
+		        for(j=pt.y;j<pt.y+PEOPLE_HEIGHT;j++){
+			        plateau[i][j].occupe=1;
+		        }
+	        }
+        }
+    }
+
+    return pt;
+}
+
+/*
 	Deplacement d'un tableau à un autre de l'indice d'un personnage
  */
 void move_index_people(int* nb_people_1, int* nb_people_2, int tab1[], int tab2[], int index){

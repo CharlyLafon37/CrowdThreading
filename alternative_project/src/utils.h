@@ -30,6 +30,7 @@
 int move_to_azimuth(int positionX, int positionY, int azimuthX, int azimuthY);
 Point point_move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT]);
 Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_plateau);
+Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, Cell plateau[][WINDOW_HEIGHT], sem_t* sem_space1, sem_t* sem_space2,int indice);
 int indice_thread(int x, int y);
 void move_index_people(int* nb_people_1, int* nb_people_2, int tab1[], int tab2[], int index);
 

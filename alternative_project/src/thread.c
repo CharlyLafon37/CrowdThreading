@@ -112,7 +112,12 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
 		datas[i].peopleSpace=malloc(sizeof(int) * nbPeople);
 		datas[i].datas=datas;
 		datas[i].option_mesure = option_mesure;
-		datas[i].sem_plateau = sem_plateau;
+        sem_init(&(datas[i].sem_space), 0, 1);
+		if(sem_plateau!=NULL){
+        	datas[i].use_sem=1;
+		}else{
+			datas[i].use_sem=0;
+		}
 		datas[i].plateau = plateau;
         datas[i].sem_join = &(sem[i]);
 	}
@@ -166,6 +171,7 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
         if(option_mesure == 0)
             printf("Thread %d terminé\n", i);
         sem_destroy(&(sem[i]));
+		sem_destroy(&(datas[i].sem_space));
     }
 }
 
@@ -173,16 +179,35 @@ void *thread_space(thread_space_data *arg)
 {
     int i,peopleLeft=0;
 	int indice=arg->n;
+
+    sem_t* next_sem;
+	sem_t* sem;
+	if(arg->use_sem!=0 && indice>=0){
+		sem=&(arg->sem_space);
+		if(indice>0)
+			next_sem=&((arg->datas[indice-1]).sem_space);
+		else
+			next_sem=NULL;
+    }else{
+	    next_sem=NULL;
+        sem=NULL;
+    }
+
     // Tant qu'il reste des personnes a traiter dans le thread
 	while((*(arg->restant))>0)
     {
 		// Boucle de traitement des personnes
 		for(i=0;i<arg->nbPeopleSpace;i++)
         {
+			if(sem!=NULL){
+				sem_wait(sem);
+			}
 			int index=arg->peopleSpace[i];
 			if(arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH)
             {
-				Point newPosition = move_people(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), arg->sem_plateau);
+				Point newPosition = move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), sem, next_sem,indice);
+				int newIndex=indice_thread(newPosition.x, newPosition.y);
+				// Si la personne est sortie
 				if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH)
                 {
 					arg->people[index].isArrived = 1;
@@ -191,12 +216,11 @@ void *thread_space(thread_space_data *arg)
                         printf("Personnes non sorties : %d\n",*(arg->restant));
 					peopleLeft++;
 				}
-				int newIndex=indice_thread(newPosition.x, newPosition.y);
-                if(newIndex!=indice)
+				// Si la personne n'est plus dans le meme espace
+                else if(newIndex!=indice)
                 {
                     // Garder en mémoire l'index de la personne
                     int temp=arg->peopleSpace[i];
-                    //printf("Passage de la personne %d du thread %d au thread %d\n", temp, indice, newIndex);
                     
                     // Ajouter l'index de la personne sur le nouveau tableau
                     (arg->datas[newIndex]).peopleSpace[(arg->datas[newIndex]).nbPeopleSpace] = temp;
@@ -210,7 +234,15 @@ void *thread_space(thread_space_data *arg)
                     }
 					arg->nbPeopleSpace = (arg->nbPeopleSpace) - 1;
                     arg->peopleSpace[(arg->nbPeopleSpace)] = -1;
+					// On deverouille le thread adjacent
+					if(next_sem!=NULL){
+						sem_post(next_sem);
+					}
                 }
+			}
+			// On deverouille notre thread
+			if(sem!=NULL){
+				sem_post(sem);
 			}
 		}
 	}
