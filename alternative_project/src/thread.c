@@ -21,8 +21,8 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
 {
     int i, j;
     
-    pthread_t threads[nbPeople];
-    thread_person_data datas[nbPeople];
+    pthread_t* threads = malloc(nbPeople * sizeof(pthread_t));
+    thread_person_data* datas = malloc(nbPeople * sizeof(thread_person_data));
     
     srand(time(NULL));
     
@@ -30,7 +30,7 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         printf("Personnes non sorties : %d\n",*restant);
     
     //Semaphores permettant l'attente des threads filles
-    sem_t sem[nbPeople];
+    sem_t* sem = malloc(nbPeople * sizeof(sem_t));
     
     for(i = 0; i < nbPeople; i++)
     {
@@ -67,6 +67,10 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         }
         sem_destroy(&(sem[i]));
     }
+                                       
+    free(sem);
+    free(threads);
+    free(datas);
 }
 
 void *thread_person(thread_person_data *arg)
