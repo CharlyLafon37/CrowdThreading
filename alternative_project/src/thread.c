@@ -209,12 +209,22 @@ void *thread_space(thread_space_data *arg)
 		// Boucle de traitement des personnes
 		for(i=0;i<arg->nbPeopleSpace;i++)
         {
+			int indexTemp=indice;
 			if(sem!=NULL)
 				sem_wait(sem);
             
 			int index=arg->peopleSpace[i];
+
 			if(arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH)
             {
+				if(sem!=NULL && next_sem!=NULL){
+					indexTemp=indice_thread(arg->people[index].x-PEOPLE_WIDTH+1, arg->people[index].y);
+					if(indexTemp!=indice){
+						sem_wait(next_sem);
+					}
+            	}
+
+
 				Point newPosition = move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), sem, next_sem,indice);
 				int newIndex=indice_thread(newPosition.x, newPosition.y);
 				// Si la personne est sortie
@@ -244,11 +254,11 @@ void *thread_space(thread_space_data *arg)
                     }
 					arg->nbPeopleSpace = (arg->nbPeopleSpace) - 1;
                     arg->peopleSpace[(arg->nbPeopleSpace)] = -1;
-					// On deverouille le thread adjacent
-					if(next_sem!=NULL){
-						sem_post(next_sem);
-					}
                 }
+				// On deverouille le thread adjacent
+				if(next_sem!=NULL && indexTemp!=indice){
+					sem_post(next_sem);
+				}
 			}
 			// On deverouille notre thread
 			if(sem!=NULL)

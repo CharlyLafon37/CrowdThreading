@@ -291,9 +291,9 @@ Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azi
 	    peoples[indexPeople].y=pt.y;
         
         newIndice = indice_thread(pt.x, pt.y);
-        if(sem_space2 != NULL && indice!=newIndice && indice>0){
+        /*if(sem_space2 != NULL && indice!=newIndice && indice>0){
                sem_wait(sem_space2);
-        }
+        }*/
 
         // On passe à 0 l'ancienne position
 	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){
