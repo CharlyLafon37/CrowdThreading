@@ -58,6 +58,12 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
     // Attente des threads filles
     for(i = 0; i < nbPeople; i++)
     {
+		if(pthread_join(threads[i], NULL))
+        {
+            perror("pthread_join");
+            return;
+        }
+
         sem_wait(&(sem[i]));
         (*restant)--;
         if(option_mesure == 0)

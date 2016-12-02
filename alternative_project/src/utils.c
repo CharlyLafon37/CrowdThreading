@@ -62,15 +62,25 @@ int can_move(int indexPeople, Person* peoples, int nbPeople, Point moveTo, int p
 
     Person p = peoples[indexPeople];
 
-	// Personnes
-	int i=0,j=0;
-	for(i=moveTo.x;i<moveTo.x+PEOPLE_WIDTH-1;i++){
-		for(j=moveTo.y;j<moveTo.y+PEOPLE_HEIGHT-1;j++){
-            if(!(i>=p.x && i<=p.x+PEOPLE_WIDTH-1 && j>=p.y && j<=p.y+PEOPLE_HEIGHT-1)){
-			    if(plateau[i][j] != 0){
-				    return 0;
-			    }
-            }
+	int i=0;
+
+	// Personnes et obstacles
+	if(p.x>moveTo.x){
+		for(i=moveTo.y;i<moveTo.y+PEOPLE_HEIGHT;i++){
+			if(plateau[moveTo.x][i] != 0) return 0;
+		}
+	}else if(p.x<moveTo.x){
+		for(i=moveTo.y;i<moveTo.y+PEOPLE_HEIGHT;i++){
+			if(plateau[moveTo.x+PEOPLE_WIDTH-1][i] != 0) return 0;
+		}
+	}
+	if(p.y>moveTo.y){
+		for(i=moveTo.x;i<moveTo.x+PEOPLE_WIDTH;i++){
+			if(plateau[i][moveTo.y] != 0) return 0;
+		}
+	}else if(p.y<moveTo.y){
+		for(i=moveTo.x;i<moveTo.x+PEOPLE_WIDTH;i++){
+			if(plateau[i][moveTo.y+PEOPLE_HEIGHT-1] != 0) return 0;
 		}
 	}
 
