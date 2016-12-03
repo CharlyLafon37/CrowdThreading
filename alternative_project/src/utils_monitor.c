@@ -50,7 +50,7 @@ Point monitor_move_people(int indexPeople, Person peoples[], int nbPeople, int a
 /*
 	Déplace la personne et renvoie sa position pour l'algo des 4 threads
 */
-Point monitor_move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT],/* sem_t* sem_space1, sem_t* sem_space2,*/ int indice){
+Point monitor_move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], int indice){
 	
     int i ,j;
     

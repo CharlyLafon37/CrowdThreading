@@ -152,16 +152,22 @@ void monitor_spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant,
 		datas[i].peopleSpace=malloc(sizeof(int) * nbPeople);
 		datas[i].datas=datas;
 		datas[i].option_mesure = option_mesure;
-        //sem_init(&(datas[i].sem_space), 0, 1);
-		/*if(sem_plateau!=NULL){
-        	datas[i].use_sem=1;
-		}else{
-			datas[i].use_sem=0;
-		}*/
+
+		/* mutex */
+		if(pthread_mutex_init(&(datas[i].mutex),NULL)!=0)
+		{printf("MUTEX_INIT ERROR!\n");return;}
+
+		if(pthread_cond_init(&(datas[i].var_cond),0)!=0)
+		{printf("COND_INIT ERROR!\n");return;}
+
+        datas[i].acces = 0;
+		/* mutex */
+
 		datas[i].plateau = plateau;
-        datas[i].sem_join = &(sem[i]);
+    	datas[i].sem_join = &(sem[i]);
 	}
     
+	/* On place les personnes */
     for(i = 0; i < nbPeople; i++)
     {
         int randX=rand()%(XMAX_PEOPLE-XMIN_PEOPLE) + XMIN_PEOPLE;
@@ -211,7 +217,9 @@ void monitor_spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant,
         if(option_mesure == 0)
             printf("Thread %d terminé\n", i);
         sem_destroy(&(sem[i]));
-		//sem_destroy(&(datas[i].sem_space));
+		/* Destruction des mutex et var_cond*/
+		pthread_mutex_destroy(&(datas[i].mutex));
+		pthread_cond_destroy(&(datas[i].var_cond));
     }
 }
 
@@ -220,18 +228,26 @@ void *monitor_thread_space(monitor_thread_space_data *arg)
     int i,peopleLeft=0;
 	int indice=arg->n;
 
-    //sem_t* next_sem;
-	//sem_t* sem;
-	/*if(arg->use_sem!=0 && indice>=0){
-		sem=&(arg->sem_space);
-		if(indice>0)
-			next_sem=&((arg->datas[indice-1]).sem_space);
-		else
-			next_sem=NULL;
-    }else{
-	    next_sem=NULL;
-        sem=NULL;
-    }*/
+    pthread_mutex_t* next_mutex;
+	pthread_mutex_t* mutex;
+	pthread_cond_t* next_var_cond;
+	pthread_cond_t* var_cond;
+
+	int* acces=&(arg->acces);
+	int* next_acces;
+
+	mutex=&(arg->mutex);
+	var_cond=&(arg->var_cond);
+	if(indice>0){
+		next_mutex=&((arg->datas[indice-1]).mutex);
+		next_var_cond=&((arg->datas[indice-1]).var_cond);
+		next_acces=&((arg->datas[indice-1]).acces);
+	}
+	else{
+		next_mutex=NULL;
+		next_var_cond=NULL;
+		next_acces=NULL;
+	}
 
     // Tant qu'il reste des personnes a traiter dans le thread
 	while((*(arg->restant))>0)
@@ -240,22 +256,29 @@ void *monitor_thread_space(monitor_thread_space_data *arg)
 		for(i=0;i<arg->nbPeopleSpace;i++)
         {
 			int indexTemp=indice;
-			/*if(sem!=NULL)
-				sem_wait(sem);*/
+
+			pthread_mutex_lock(mutex);
+        	if(*(acces)==1){
+		  	  pthread_cond_wait(var_cond,mutex);
+        	}
+       		*(acces)=1;
             
 			int index=arg->peopleSpace[i];
 
 			if(arg->people[index].x!=XAZIMUTH || arg->people[index].y!=YAZIMUTH)
             {
-				/*if(sem!=NULL && next_sem!=NULL){
+				if(next_mutex!=NULL){
 					indexTemp=indice_thread(arg->people[index].x-PEOPLE_WIDTH+1, arg->people[index].y);
 					if(indexTemp!=indice){
-						sem_wait(next_sem);
+						pthread_mutex_lock(next_mutex);
+		    			if(*(next_acces)==1){
+			  	  			pthread_cond_wait(next_var_cond,next_mutex);
+		    			}
+		   				*(next_acces)=1;
 					}
-            	}*/
+				}
 
-
-				Point newPosition = monitor_move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau),/* sem, next_sem,*/indice);
+				Point newPosition = monitor_move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau),indice);
 				int newIndex=indice_thread(newPosition.x, newPosition.y);
 				// Si la personne est sortie
 				if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH)
@@ -286,13 +309,16 @@ void *monitor_thread_space(monitor_thread_space_data *arg)
                     arg->peopleSpace[(arg->nbPeopleSpace)] = -1;
                 }
 				// On deverouille le thread adjacent
-				/*if(next_sem!=NULL && indexTemp!=indice){
-					sem_post(next_sem);
-				}*/
+				if(next_mutex!= NULL && indexTemp!=indice){
+					*(next_acces)=0;
+					pthread_cond_signal(next_var_cond);
+        			pthread_mutex_unlock(next_mutex);
+				}
 			}
 			// On deverouille notre thread
-			/*if(sem!=NULL)
-				sem_post(sem);*/
+			*(acces)=0;
+			pthread_cond_signal(var_cond);
+        	pthread_mutex_unlock(mutex);
 		}
 	}
 	free(arg->peopleSpace);

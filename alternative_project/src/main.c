@@ -89,15 +89,19 @@ int main(int argc, char** argv)
         }
         else if(option_thread == 1) // Si on simule en divisant le terrain en 4 thread.
         {
-            spawnPeopleThreadSpace(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
+			if(option_version == 3){
+				monitor_spawnPeopleThreadSpace(people, nbPeople, &restant, option_mesure, plateau);
+			}else{
+            	spawnPeopleThreadSpace(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
+			}
         }
         else if(option_thread == 2) // Si on simule avec un thread par personne.
         {
-	    if(option__version == 3){
+	    	if(option_version == 3){
                 monitor_spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau);
-	    }else{
+	    	}else{
                 spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
-	    }
+	    	}
         }
         
         tempsFin = clock();
