@@ -12,6 +12,7 @@
 #include "main.h"
 #include "utils.h"
 #include "thread.h"
+#include "thread_monitor.h"
 
 int main(int argc, char** argv)
 {
@@ -92,7 +93,11 @@ int main(int argc, char** argv)
         }
         else if(option_thread == 2) // Si on simule avec un thread par personne.
         {
-            spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
+	    if(option__version == 3){
+                monitor_spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau);
+	    }else{
+                spawnPeopleThread(people, nbPeople, &restant, option_mesure, plateau, ptr); // Création des personnes et de leur thread.
+	    }
         }
         
         tempsFin = clock();

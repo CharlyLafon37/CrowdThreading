@@ -5,5 +5,5 @@
 SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)"
 
 # Main
-gcc "$SCRIPT_PATH"/src/main.c "$SCRIPT_PATH"/src/positions.c "$SCRIPT_PATH"/src/utils.c "$SCRIPT_PATH"/src/thread.c -lm -lpthread -o "$SCRIPT_PATH"/bin/crowd.out
+gcc "$SCRIPT_PATH"/src/main.c "$SCRIPT_PATH"/src/positions.c "$SCRIPT_PATH"/src/utils.c "$SCRIPT_PATH"/src/thread.c "$SCRIPT_PATH"/src/utils_monitor.c "$SCRIPT_PATH"/src/thread_monitor.c -lm -lpthread -o "$SCRIPT_PATH"/bin/crowd.out
 
