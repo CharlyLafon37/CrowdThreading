@@ -12,7 +12,7 @@
 #include <pthread.h>
 #include "thread_monitor.h"
 #include "positions.h"
-#include "utils_monitor.h"
+#include "utils.h"
 
 
 /**** -t2 ****/
@@ -110,7 +110,7 @@ void *monitor_thread_person(monitor_thread_person_data *arg)
 		    pthread_cond_wait(arg->var_cond,arg->mutex);
         }
         *(arg->acces)=1;
-        Point newPosition = monitor_move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau));
+        Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau));
         *(arg->acces)=0;
 		pthread_cond_signal(arg->var_cond);
         pthread_mutex_unlock(arg->mutex);
@@ -278,7 +278,7 @@ void *monitor_thread_space(monitor_thread_space_data *arg)
 					}
 				}
 
-				Point newPosition = monitor_move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau),indice);
+				Point newPosition = move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau),indice);
 				int newIndex=indice_thread(newPosition.x, newPosition.y);
 				// Si la personne est sortie
 				if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH)

@@ -230,15 +230,12 @@ int indice_thread(int x, int y){
 /*
 	Déplace la personne et renvoie sa position.
 */
-Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], sem_t* sem_plateau){
+Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT]){
 	
     int i ,j;
     
     Person p = peoples[indexPeople];
     int oldx = p.x, oldy = p.y;
-
-	if(sem_plateau != NULL)
-        sem_wait(sem_plateau);
     
 	Point pt = point_move_people(indexPeople, peoples, nbPeople, azimuthX, azimuthY, plateau);
     
@@ -264,8 +261,6 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 	        }
         }
     }
-    if(sem_plateau != NULL)
-        sem_post(sem_plateau);
     
 	return pt;
 }
@@ -273,7 +268,7 @@ Point move_people(int indexPeople, Person peoples[], int nbPeople, int azimuthX,
 /*
 	Déplace la personne et renvoie sa position pour l'algo des 4 threads
 */
-Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], sem_t* sem_space1, sem_t* sem_space2, int indice){
+Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azimuthX, int azimuthY, int plateau[][WINDOW_HEIGHT], int indice){
 	
     int i ,j;
     
@@ -291,9 +286,6 @@ Point move_people_space(int indexPeople, Person peoples[], int nbPeople, int azi
 	    peoples[indexPeople].y=pt.y;
         
         newIndice = indice_thread(pt.x, pt.y);
-        /*if(sem_space2 != NULL && indice!=newIndice && indice>0){
-               sem_wait(sem_space2);
-        }*/
 
         // On passe à 0 l'ancienne position
 	    for(i=p.x;i<p.x+PEOPLE_WIDTH;i++){

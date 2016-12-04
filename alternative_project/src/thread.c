@@ -73,8 +73,12 @@ void *thread_person(thread_person_data *arg)
 {
     while(arg->people[arg->n].x!=XAZIMUTH || arg->people[arg->n].y!=YAZIMUTH)
     {
-        Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), arg->sem_plateau);
-    }
+        if(arg->sem_plateau != NULL)
+        	sem_wait(arg->sem_plateau);
+		Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau));
+    	if(arg->sem_plateau != NULL)
+        	sem_post(arg->sem_plateau);
+	}
     arg->people[arg->n].isArrived = 1;
     pthread_exit(NULL);
 }
@@ -211,7 +215,7 @@ void *thread_space(thread_space_data *arg)
             	}
 
 
-				Point newPosition = move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), sem, next_sem,indice);
+				Point newPosition = move_people_space(index, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau),indice);
 				int newIndex=indice_thread(newPosition.x, newPosition.y);
 				// Si la personne est sortie
 				if(arg->people[index].x==XAZIMUTH && arg->people[index].y==YAZIMUTH)

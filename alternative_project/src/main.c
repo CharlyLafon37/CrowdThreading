@@ -75,7 +75,7 @@ int main(int argc, char** argv)
             {
                 for(i = 0; i < nbPeople; i++)
                 {
-                    Point newPosition = move_people(i, people, nbPeople, XAZIMUTH, YAZIMUTH, plateau, ptr);
+                    Point newPosition = move_people(i, people, nbPeople, XAZIMUTH, YAZIMUTH, plateau);
                     
                     if(people[i].x == XAZIMUTH && people[i].y == YAZIMUTH && people[i].isArrived == 0)
                     {
