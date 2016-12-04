@@ -5,4 +5,4 @@
 SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)"
 
 # Main
-"$SCRIPT_PATH"/bin/crowd.out -p4 -t1 -e2 -m
+"$SCRIPT_PATH"/bin/crowd.out -p4 -t1 -e3 -m
