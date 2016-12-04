@@ -19,7 +19,6 @@ struct thread_person_data
     int nbPeople;
     Person* people;
     sem_t* sem_plateau;
-    sem_t* sem_join;
     int (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
 };
 
@@ -36,7 +35,6 @@ struct thread_space_data
     int option_mesure;
     sem_t sem_space;
     int use_sem;
-    sem_t* sem_join;
     int (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
 };
 

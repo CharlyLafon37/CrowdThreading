@@ -29,13 +29,8 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
     if(option_mesure == 0)
         printf("Personnes non sorties : %d\n",*restant);
     
-    //Semaphores permettant l'attente des threads filles
-    sem_t* sem = malloc(nbPeople * sizeof(sem_t));
-    
     for(i = 0; i < nbPeople; i++)
     {
-        sem_init(&(sem[i]), 0, 0);
-        
         randomizeAndPut(people, i, plateau);
         
         // Création du thread de la personne.
@@ -44,7 +39,6 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
         datas[i].people = people;
         datas[i].plateau = plateau;
         datas[i].sem_plateau = sem_plateau;
-        datas[i].sem_join = &(sem[i]);
         
         if(option_mesure == 0)
             printf("Creation du thread %d\n",i);
@@ -63,18 +57,14 @@ void spawnPeopleThread(Person people[], int nbPeople, int *restant, int option_m
             perror("pthread_join");
             return;
         }
-
-        sem_wait(&(sem[i]));
         (*restant)--;
         if(option_mesure == 0)
         {
             printf("Personnes non sorties : %d\n",*restant);
             printf("Thread %d terminé\n", i);
         }
-        sem_destroy(&(sem[i]));
     }
-                                       
-    free(sem);
+    
     free(threads);
     free(datas);
 }
@@ -86,7 +76,6 @@ void *thread_person(thread_person_data *arg)
         Point newPosition = move_people(arg->n, arg->people, arg->nbPeople, XAZIMUTH, YAZIMUTH, *(arg->plateau), arg->sem_plateau);
     }
     arg->people[arg->n].isArrived = 1;
-    sem_post(arg->sem_join);
     pthread_exit(NULL);
 }
 
@@ -105,15 +94,10 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
     
     pthread_t threads[NB_THREAD];
     thread_space_data datas[NB_THREAD];
-    
-    //Semaphores permettant l'attente des threads filles
-    sem_t sem[NB_THREAD];
 
 	// On prépare les datas de chaque Thread
 	for(i=0;i<NB_THREAD;i++)
     {
-        sem_init(&(sem[i]), 0, 0);
-        
 		datas[i].n=i;
 		datas[i].restant=restant;
 		datas[i].nbPeople=nbPeople;
@@ -129,7 +113,6 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
 			datas[i].use_sem=0;
 		}
 		datas[i].plateau = plateau;
-        datas[i].sem_join = &(sem[i]);
 	}
     
     for(i = 0; i < nbPeople; i++)
@@ -177,10 +160,13 @@ void spawnPeopleThreadSpace(Person people[], int nbPeople, int *restant, int opt
     // Attente des threads filles
 	for(i = 0; i < NB_THREAD; i++)
     {
-        sem_wait(&(sem[i]));
+        if(pthread_join(threads[i], NULL))
+        {
+            perror("pthread_join");
+            return;
+        }
         if(option_mesure == 0)
             printf("Thread %d terminé\n", i);
-        sem_destroy(&(sem[i]));
 		sem_destroy(&(datas[i].sem_space));
     }
 }
@@ -266,7 +252,6 @@ void *thread_space(thread_space_data *arg)
 		}
 	}
 	free(arg->peopleSpace);
-    sem_post(arg->sem_join);
 	pthread_exit(NULL);
 }
 
