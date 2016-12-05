@@ -29,9 +29,6 @@ void monitor_spawnPeopleThread(Person people[], int nbPeople, int *restant, int 
     if(option_mesure == 0)
         printf("Personnes non sorties : %d\n",*restant);
     
-    //Semaphores permettant l'attente des threads filles
-    sem_t* sem = malloc(nbPeople * sizeof(sem_t));
-    
 	/* mutex */
 	pthread_mutex_t mutex;
 	if(pthread_mutex_init(&mutex,NULL)!=0)
@@ -47,8 +44,6 @@ void monitor_spawnPeopleThread(Person people[], int nbPeople, int *restant, int 
 
     for(i = 0; i < nbPeople; i++)
     {
-        sem_init(&(sem[i]), 0, 0);
-        
         randomizeAndPut(people, i, plateau);
         
         // Création du thread de la personne.
@@ -62,8 +57,6 @@ void monitor_spawnPeopleThread(Person people[], int nbPeople, int *restant, int 
 		datas[i].var_cond = &var_cond;
         datas[i].acces = &acces;
 		/* mutex */
-
-        datas[i].sem_join = &(sem[i]);
         
         if(option_mesure == 0)
             printf("Creation du thread %d\n",i);
@@ -82,21 +75,18 @@ void monitor_spawnPeopleThread(Person people[], int nbPeople, int *restant, int 
             perror("pthread_join");
             return;
         }
-        sem_wait(&(sem[i]));
         (*restant)--;
         if(option_mesure == 0)
         {
             printf("Personnes non sorties : %d\n",*restant);
             printf("Thread %d terminé\n", i);
         }
-        sem_destroy(&(sem[i]));
     }
                
 	/* Destruction du mutex */
 	pthread_mutex_destroy(&mutex);
 	pthread_cond_destroy(&var_cond);
-                        
-    free(sem);
+    
     free(threads);
     free(datas);
 }
@@ -116,7 +106,6 @@ void *monitor_thread_person(monitor_thread_person_data *arg)
         pthread_mutex_unlock(arg->mutex);
     }
     arg->people[arg->n].isArrived = 1;
-    sem_post(arg->sem_join);
     pthread_exit(NULL);
 }
 

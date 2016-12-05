@@ -21,7 +21,6 @@ struct monitor_thread_person_data
     pthread_mutex_t* mutex;
     pthread_cond_t* var_cond;
     int* acces;
-    sem_t* sem_join;
     int (*plateau)[WINDOW_WIDTH][WINDOW_HEIGHT];
 };
 
